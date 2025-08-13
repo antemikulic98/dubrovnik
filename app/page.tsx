@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import Header from './components/Header';
 
@@ -124,12 +125,12 @@ function FeaturedTours() {
                 <p className='text-gray-600 mb-6 flex-grow'>
                   {tour.description}
                 </p>
-                <a
+                <Link
                   href={`/tours/${tour.id}`}
                   className='block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200'
                 >
                   Book This Tour
-                </a>
+                </Link>
               </div>
             </div>
           ))}
@@ -289,7 +290,7 @@ function ContactForm() {
           className='mt-1 h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded'
         />
         <label htmlFor='newsletter' className='text-sm text-gray-600'>
-          I'd like to receive updates about new tours and special offers
+          I&apos;d like to receive updates about new tours and special offers
         </label>
       </div>
 
@@ -385,13 +386,13 @@ export default function Home() {
                 About <span className='text-red-600'>Our Story</span>
               </h2>
               <p className='text-gray-600 mb-8 text-lg'>
-                Discover the passion and dedication behind Dubrovnik's premier
-                sightseeing experience.
+                Discover the passion and dedication behind Dubrovnik&apos;s
+                premier sightseeing experience.
               </p>
               <div className='space-y-6 text-lg text-gray-700 leading-relaxed'>
                 <p>
-                  For over a decade, we've been passionate about showcasing the
-                  breathtaking beauty of Dubrovnik from the best possible
+                  For over a decade, we&apos;ve been passionate about showcasing
+                  the breathtaking beauty of Dubrovnik from the best possible
                   perspective – the top deck of our premium sightseeing buses.
                 </p>
                 <p>
@@ -401,9 +402,10 @@ export default function Home() {
                   nearby islands.
                 </p>
                 <p>
-                  What started as a family business has grown into Dubrovnik's
-                  most trusted sightseeing experience, welcoming over 100,000
-                  visitors annually from around the world.
+                  What started as a family business has grown into
+                  Dubrovnik&apos;s most trusted sightseeing experience,
+                  welcoming over 100,000 visitors annually from around the
+                  world.
                 </p>
               </div>
               <div className='mt-8 grid grid-cols-3 gap-6'>
@@ -437,8 +439,8 @@ export default function Home() {
                 Get in <span className='text-red-600'>Touch</span>
               </h2>
               <p className='text-gray-600 mb-8 text-lg'>
-                Have questions about our tours? Planning a group visit? We'd
-                love to hear from you!
+                Have questions about our tours? Planning a group visit?
+                We&apos;d love to hear from you!
               </p>
 
               <ContactForm />
@@ -575,24 +577,24 @@ function Footer() {
             <div>
               <h4 className='font-bold mb-6 text-lg'>Popular Tours</h4>
               <div className='space-y-3'>
-                <a
+                <Link
                   href='/tours/1'
                   className='block text-gray-300 hover:text-white transition-colors'
                 >
                   Dubrovnik Panorama Tour
-                </a>
-                <a
+                </Link>
+                <Link
                   href='/tours/2'
                   className='block text-gray-300 hover:text-white transition-colors'
                 >
                   Hop-On Hop-Off 1-Day Pass
-                </a>
-                <a
+                </Link>
+                <Link
                   href='/tours/3'
                   className='block text-gray-300 hover:text-white transition-colors'
                 >
                   Game of Thrones Tour
-                </a>
+                </Link>
                 <a
                   href='#'
                   className='block text-gray-300 hover:text-white transition-colors'

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import Header from '@/app/components/Header';
 
 // Expanded tour data - in a real app, this would come from a database or API
@@ -194,14 +195,14 @@ export default async function TourPage({ params }: TourPageProps) {
             Tour Not Found
           </h1>
           <p className='text-gray-600 mb-8'>
-            Sorry, the tour you're looking for doesn't exist.
+            Sorry, the tour you&apos;re looking for doesn&apos;t exist.
           </p>
-          <a
+          <Link
             href='/'
             className='bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-lg transition-colors'
           >
             Back to Home
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -428,7 +429,7 @@ export default async function TourPage({ params }: TourPageProps) {
                         clipRule='evenodd'
                       />
                     </svg>
-                    What's Included
+                    What&apos;s Included
                   </h3>
                   <ul className='space-y-2'>
                     {tour.included.map((item, index) => (
@@ -549,7 +550,8 @@ export default async function TourPage({ params }: TourPageProps) {
                     </p>
                   </div>
                   <code className='text-xs bg-gray-100 px-3 py-1 rounded text-gray-600'>
-                    &lt;script src="bokun-widget.js"&gt;&lt;/script&gt;
+                    &lt;script
+                    src=&quot;bokun-widget.js&quot;&gt;&lt;/script&gt;
                   </code>
                 </div>
 
@@ -869,24 +871,24 @@ export default async function TourPage({ params }: TourPageProps) {
               <div>
                 <h4 className='font-bold mb-6 text-lg'>Popular Tours</h4>
                 <div className='space-y-3'>
-                  <a
+                  <Link
                     href='/tours/1'
                     className='block text-gray-300 hover:text-white transition-colors'
                   >
                     Dubrovnik Panorama Tour
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href='/tours/2'
                     className='block text-gray-300 hover:text-white transition-colors'
                   >
                     Hop-On Hop-Off 1-Day Pass
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href='/tours/3'
                     className='block text-gray-300 hover:text-white transition-colors'
                   >
                     Game of Thrones Tour
-                  </a>
+                  </Link>
                   <a
                     href='#'
                     className='block text-gray-300 hover:text-white transition-colors'

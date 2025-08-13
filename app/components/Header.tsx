@@ -43,7 +43,7 @@ export default function Header({
           </div>
 
           <nav className='hidden md:flex items-center space-x-8'>
-            <a
+            <Link
               href='/#tours'
               className={`${
                 isTransparent
@@ -52,8 +52,8 @@ export default function Header({
               } font-medium transition-colors`}
             >
               Tours
-            </a>
-            <a
+            </Link>
+            <Link
               href='/#about'
               className={`${
                 isTransparent
@@ -62,8 +62,8 @@ export default function Header({
               } font-medium transition-colors`}
             >
               About us
-            </a>
-            <a
+            </Link>
+            <Link
               href='/#contact'
               className={`${
                 isTransparent
@@ -72,7 +72,7 @@ export default function Header({
               } font-medium transition-colors`}
             >
               Contact
-            </a>
+            </Link>
           </nav>
 
           <div className='hidden md:flex items-center gap-4'>
@@ -80,7 +80,7 @@ export default function Header({
               theme={isTransparent ? 'dark' : 'light'}
               size='lg'
             />
-            <a
+            <Link
               href='/#tours'
               className={`${
                 isTransparent
@@ -89,7 +89,7 @@ export default function Header({
               } font-bold px-6 py-3 rounded-lg transition-colors shadow-lg`}
             >
               Book Now
-            </a>
+            </Link>
           </div>
 
           <button
@@ -182,37 +182,37 @@ export default function Header({
           </button>
         </div>
         <nav className='px-6 py-6 space-y-4'>
-          <a
+          <Link
             href='/#tours'
             onClick={() => setMobileOpen(false)}
             className='block text-gray-800 text-base font-medium'
           >
             Tours
-          </a>
-          <a
+          </Link>
+          <Link
             href='/#about'
             onClick={() => setMobileOpen(false)}
             className='block text-gray-800 text-base font-medium'
           >
             About us
-          </a>
-          <a
+          </Link>
+          <Link
             href='/#contact'
             onClick={() => setMobileOpen(false)}
             className='block text-gray-800 text-base font-medium'
           >
             Contact
-          </a>
+          </Link>
           <div className='pt-4 border-t'>
             <LanguageSwitcher theme='light' size='lg' />
           </div>
-          <a
+          <Link
             href='/#tours'
             onClick={() => setMobileOpen(false)}
             className='mt-4 inline-flex items-center justify-center w-full bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-lg transition-colors shadow-lg'
           >
             Book Now
-          </a>
+          </Link>
         </nav>
       </aside>
     </header>
