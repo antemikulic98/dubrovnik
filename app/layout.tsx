@@ -1,21 +1,26 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Lato, Bebas_Neue } from 'next/font/google';
 import './globals.css';
+import { LanguageProvider } from './lib/LanguageContext';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const lato = Lato({
+  variable: '--font-lato',
   subsets: ['latin'],
+  weight: ['300', '400', '700'],
+  display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const bebasNeue = Bebas_Neue({
+  variable: '--font-bebas',
   subsets: ['latin'],
+  weight: '400',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'Dubrovnik City Sightseeing | Open-Top Bus Tours',
+  title: 'Hop On Hop Off | Dubrovnik Bus Tours',
   description:
-    'Discover Dubrovnik with panoramic open-top bus tours. Hop on, hop off, Game of Thrones route, sunset panorama, and coastal rides.',
+    'Explore the Pearl of the Adriatic your way — audio tours, wine experiences, and custom adventures with Dubrovnik Bus Tours.',
 };
 
 export default function RootLayout({
@@ -26,9 +31,9 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${lato.variable} ${bebasNeue.variable} font-sans antialiased`}
       >
-        {children}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );

@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import LanguageSwitcher from '../components/LanguageSwitcher';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useLanguage } from '../lib/LanguageContext';
 
 type HeaderVariant = 'transparent' | 'solid';
 
@@ -14,6 +15,7 @@ export default function Header({
 }) {
   const isTransparent = variant === 'transparent';
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { t } = useLanguage();
 
   return (
     <header
@@ -38,7 +40,7 @@ export default function Header({
               >
                 <Image src='/globe.svg' alt='Logo' width={20} height={20} />
               </span>
-              <span className='sr-only'>Dubrovnik City Sightseeing</span>
+              <span className='sr-only'>Dubrovnik Audio Guide</span>
             </Link>
           </div>
 
@@ -51,7 +53,7 @@ export default function Header({
                   : 'text-gray-700 hover:text-gray-900'
               } font-medium transition-colors`}
             >
-              Tours
+              {t.nav.tours}
             </Link>
             <Link
               href='/#about'
@@ -61,7 +63,7 @@ export default function Header({
                   : 'text-gray-700 hover:text-gray-900'
               } font-medium transition-colors`}
             >
-              About us
+              {t.nav.about}
             </Link>
             <Link
               href='/#contact'
@@ -71,7 +73,27 @@ export default function Header({
                   : 'text-gray-700 hover:text-gray-900'
               } font-medium transition-colors`}
             >
-              Contact
+              {t.nav.contact}
+            </Link>
+            <Link
+              href='/blog'
+              className={`${
+                isTransparent
+                  ? 'text-white hover:text-gray-200'
+                  : 'text-gray-700 hover:text-gray-900'
+              } font-medium transition-colors`}
+            >
+              {t.nav.blog}
+            </Link>
+            <Link
+              href='/gallery'
+              className={`${
+                isTransparent
+                  ? 'text-white hover:text-gray-200'
+                  : 'text-gray-700 hover:text-gray-900'
+              } font-medium transition-colors`}
+            >
+              {t.nav.gallery}
             </Link>
           </nav>
 
@@ -88,7 +110,7 @@ export default function Header({
                   : 'bg-red-600 hover:bg-red-700 text-white'
               } font-bold px-6 py-3 rounded-lg transition-colors shadow-lg`}
             >
-              Book Now
+              {t.nav.bookNow}
             </Link>
           </div>
 
@@ -159,7 +181,7 @@ export default function Header({
             <span className='inline-flex items-center justify-center rounded-full w-9 h-9 bg-gray-900'>
               <Image src='/globe.svg' alt='Logo' width={18} height={18} />
             </span>
-            <span className='sr-only'>Dubrovnik City Sightseeing</span>
+            <span className='sr-only'>Dubrovnik Audio Guide</span>
           </Link>
           <button
             className='p-2 text-gray-900'
@@ -187,21 +209,35 @@ export default function Header({
             onClick={() => setMobileOpen(false)}
             className='block text-gray-800 text-base font-medium'
           >
-            Tours
+            {t.nav.tours}
           </Link>
           <Link
             href='/#about'
             onClick={() => setMobileOpen(false)}
             className='block text-gray-800 text-base font-medium'
           >
-            About us
+            {t.nav.about}
           </Link>
           <Link
             href='/#contact'
             onClick={() => setMobileOpen(false)}
             className='block text-gray-800 text-base font-medium'
           >
-            Contact
+            {t.nav.contact}
+          </Link>
+          <Link
+            href='/blog'
+            onClick={() => setMobileOpen(false)}
+            className='block text-gray-800 text-base font-medium'
+          >
+            {t.nav.blog}
+          </Link>
+          <Link
+            href='/gallery'
+            onClick={() => setMobileOpen(false)}
+            className='block text-gray-800 text-base font-medium'
+          >
+            {t.nav.gallery}
           </Link>
           <div className='pt-4 border-t'>
             <LanguageSwitcher theme='light' size='lg' />
@@ -211,7 +247,7 @@ export default function Header({
             onClick={() => setMobileOpen(false)}
             className='mt-4 inline-flex items-center justify-center w-full bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-lg transition-colors shadow-lg'
           >
-            Book Now
+            {t.nav.bookNow}
           </Link>
         </nav>
       </aside>

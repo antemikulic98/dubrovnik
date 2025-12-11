@@ -1,21 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-
-type LanguageCode = 'en' | 'hr' | 'de' | 'it';
-
-interface LanguageDefinition {
-  code: LanguageCode;
-  label: string;
-  flag: string;
-}
-
-const LANGUAGES: LanguageDefinition[] = [
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'hr', label: 'Hrvatski', flag: '🇭🇷' },
-  { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
-  { code: 'it', label: 'Italiano', flag: '🇮🇹' },
-];
+import { useMemo, useState, useEffect, useRef } from 'react';
+import { useLanguage } from '../lib/LanguageContext';
+import { LANGUAGES, LanguageCode } from '../lib/translations';
 
 export default function LanguageSwitcher({
   theme = 'light',
@@ -25,26 +12,30 @@ export default function LanguageSwitcher({
   size?: 'sm' | 'md' | 'lg';
 }) {
   const [open, setOpen] = useState(false);
-  const [language, setLanguage] = useState<LanguageCode>('en');
+  const { language, setLanguage } = useLanguage();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const current = useMemo(
     () => LANGUAGES.find((l) => l.code === language) ?? LANGUAGES[0],
     [language]
   );
 
+  // Close dropdown when clicking outside
   useEffect(() => {
-    const stored = (typeof window !== 'undefined' &&
-      localStorage.getItem('site.language')) as LanguageCode | null;
-    if (stored && LANGUAGES.some((l) => l.code === stored)) {
-      setLanguage(stored);
-      document.documentElement.setAttribute('lang', stored);
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
     }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const selectLanguage = (code: LanguageCode) => {
     setLanguage(code);
-    localStorage.setItem('site.language', code);
-    document.documentElement.setAttribute('lang', code);
     setOpen(false);
   };
 
@@ -57,7 +48,7 @@ export default function LanguageSwitcher({
     size === 'lg' ? 'h-12 px-4' : size === 'sm' ? 'h-9 px-2' : 'h-10 px-3';
 
   return (
-    <div className='relative'>
+    <div className='relative' ref={dropdownRef}>
       <button
         aria-label='Change language'
         onClick={() => setOpen((v) => !v)}
@@ -66,7 +57,9 @@ export default function LanguageSwitcher({
         <span className='text-base leading-none'>{current.flag}</span>
         <span className='hidden sm:inline'>{current.label}</span>
         <svg
-          className='w-4 h-4 opacity-80'
+          className={`w-4 h-4 opacity-80 transition-transform ${
+            open ? 'rotate-180' : ''
+          }`}
           viewBox='0 0 24 24'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
@@ -90,12 +83,27 @@ export default function LanguageSwitcher({
               <li key={l.code}>
                 <button
                   className={`w-full flex items-center gap-2 px-3 py-2 text-sm text-left ${hoverBg} text-gray-900 ${
-                    l.code === language ? 'font-semibold' : 'font-normal'
+                    l.code === language
+                      ? 'font-semibold bg-gray-50'
+                      : 'font-normal'
                   }`}
                   onClick={() => selectLanguage(l.code)}
                 >
                   <span className='text-base leading-none'>{l.flag}</span>
                   <span>{l.label}</span>
+                  {l.code === language && (
+                    <svg
+                      className='w-4 h-4 ml-auto text-red-600'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                  )}
                 </button>
               </li>
             ))}
