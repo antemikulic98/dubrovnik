@@ -208,10 +208,9 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex flex-col md:flex-row justify-between items-center gap-6'>
             <div className='flex items-center gap-3'>
-              <div className='bg-white rounded-full w-10 h-10 flex items-center justify-center'>
-                <Image src='/globe.svg' alt='Logo' width={20} height={20} />
+              <div className='bg-white rounded-xl p-4'>
+                <Image src='/img/logo.svg' alt='Dubrovnik Tours' width={200} height={70} className='h-[70px] w-auto' />
               </div>
-              <span className='text-gray-300'>Dubrovnik Tours</span>
             </div>
             <div className='flex gap-6'>
               <Link

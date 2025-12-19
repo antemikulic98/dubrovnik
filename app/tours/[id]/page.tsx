@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import Script from 'next/script';
 import Header from '@/app/components/Header';
 import { useLanguage } from '@/app/lib/LanguageContext';
 import { use } from 'react';
@@ -20,7 +21,7 @@ function AudioGuideTourPage() {
       {/* Hero Section */}
       <section className='relative h-[70vh] overflow-hidden'>
         <Image
-          src='https://images.unsplash.com/photo-1555990538-1e6c2e3c9c71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'
+          src='https://images.unsplash.com/photo-1590001155093-a3c66ab0c3ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'
           alt={t.audioGuideTour.title}
           fill
           className='object-cover'
@@ -275,17 +276,18 @@ function AudioGuideTourPage() {
                   </div>
                 </div>
 
-                {/* Bokun Widget Placeholder */}
-                <div className='border-2 border-dashed border-gray-300 rounded-lg p-6 text-center mb-6'>
-                  <p className='font-medium text-gray-700 mb-2'>
-                    Bokun Booking Widget
-                  </p>
-                  <p className='text-sm text-gray-500'>
-                    Paste your Bokun widget code here
-                  </p>
-                </div>
+                {/* Bokun Booking Widget */}
+                <Script
+                  src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=5133d488-02e7-4b3f-8aab-f7f57d5dc30b"
+                  strategy="lazyOnload"
+                />
+                <div
+                  className="bokunWidget"
+                  data-src="https://widgets.bokun.io/online-sales/5133d488-02e7-4b3f-8aab-f7f57d5dc30b/experience-calendar/1131496"
+                ></div>
+                <noscript>Please enable javascript in your browser to book</noscript>
 
-                <div className='space-y-4 text-sm text-gray-600'>
+                <div className='space-y-4 text-sm text-gray-600 mt-6'>
                   <div className='flex items-start space-x-3'>
                     <svg
                       className='w-5 h-5 text-green-600 mt-0.5'
@@ -600,17 +602,18 @@ function WineTourPage() {
                   </div>
                 </div>
 
-                {/* Bokun Widget Placeholder */}
-                <div className='border-2 border-dashed border-gray-300 rounded-lg p-6 text-center mb-6'>
-                  <p className='font-medium text-gray-700 mb-2'>
-                    Bokun Booking Widget
-                  </p>
-                  <p className='text-sm text-gray-500'>
-                    Paste your Bokun widget code here
-                  </p>
-                </div>
+                {/* Bokun Booking Widget */}
+                <Script
+                  src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=5133d488-02e7-4b3f-8aab-f7f57d5dc30b"
+                  strategy="lazyOnload"
+                />
+                <div
+                  className="bokunWidget"
+                  data-src="https://widgets.bokun.io/online-sales/5133d488-02e7-4b3f-8aab-f7f57d5dc30b/experience-calendar/1131517"
+                ></div>
+                <noscript>Please enable javascript in your browser to book</noscript>
 
-                <div className='space-y-4 text-sm text-gray-600'>
+                <div className='space-y-4 text-sm text-gray-600 mt-6'>
                   <div className='flex items-start space-x-3'>
                     <svg
                       className='w-5 h-5 text-green-600 mt-0.5'
@@ -711,10 +714,9 @@ function TourFooter() {
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='flex flex-col md:flex-row justify-between items-center gap-6'>
           <div className='flex items-center gap-3'>
-            <div className='bg-white rounded-full w-10 h-10 flex items-center justify-center'>
-              <Image src='/globe.svg' alt='Logo' width={20} height={20} />
+            <div className='bg-white rounded-xl p-4'>
+              <Image src='/img/logo.svg' alt='Dubrovnik Tours' width={200} height={70} className='h-[70px] w-auto' />
             </div>
-            <span className='text-gray-300'>Dubrovnik Tours</span>
           </div>
           <div className='flex gap-6'>
             <Link

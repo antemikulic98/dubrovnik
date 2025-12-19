@@ -40,14 +40,7 @@ function CustomTourModal({
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Create email body
-    const interestLabels = formData.interests
-      .map((i) => {
-        const key = i as keyof typeof t.customTour.form.interestOptions;
-        return t.customTour.form.interestOptions[key];
-      })
-      .join(', ');
-
+    // Create duration label for email
     const durationLabel =
       formData.duration === 'halfDay'
         ? t.customTour.form.durationOptions.halfDay
@@ -55,32 +48,40 @@ function CustomTourModal({
         ? t.customTour.form.durationOptions.fullDay
         : t.customTour.form.durationOptions.multiDay;
 
-    const emailSubject = encodeURIComponent(
-      `Custom Tour Request from ${formData.name}`
-    );
-    const emailBody = encodeURIComponent(
-      `New Custom Tour Request\n\n` +
-        `Name: ${formData.name}\n` +
-        `Email: ${formData.email}\n` +
-        `Phone: ${formData.phone || 'Not provided'}\n` +
-        `Preferred Date: ${formData.date || 'Flexible'}\n` +
-        `Group Size: ${formData.groupSize || 'Not specified'}\n` +
-        `Interests: ${interestLabels || 'Not specified'}\n` +
-        `Duration: ${durationLabel || 'Not specified'}\n\n` +
-        `Additional Requests:\n${formData.additionalRequests || 'None'}`
-    );
+    // Create interest labels for email
+    const interestLabels = formData.interests.map((i) => {
+      const key = i as keyof typeof t.customTour.form.interestOptions;
+      return t.customTour.form.interestOptions[key];
+    });
 
-    // Open Gmail compose
-    window.open(
-      `https://mail.google.com/mail/?view=cm&fs=1&to=hello@dubrovnik-tours.com&su=${emailSubject}&body=${emailBody}`,
-      '_blank'
-    );
+    try {
+      const response = await fetch('/api/custom-tour', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          date: formData.date,
+          groupSize: formData.groupSize,
+          interests: interestLabels,
+          duration: durationLabel,
+          additionalRequests: formData.additionalRequests,
+        }),
+      });
 
-    // Simulate sending
-    setTimeout(() => {
+      if (response.ok) {
+        setIsSuccess(true);
+      } else {
+        alert('Failed to send request. Please try again.');
+      }
+    } catch {
+      alert('Failed to send request. Please try again.');
+    } finally {
       setIsSubmitting(false);
-      setIsSuccess(true);
-    }, 500);
+    }
   };
 
   const resetForm = () => {
@@ -624,6 +625,15 @@ function ContactForm() {
   const { t } = useLanguage();
   const [selectedSubject, setSelectedSubject] = useState('');
   const [isSubjectOpen, setIsSubjectOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+    newsletter: false,
+  });
 
   const subjectOptions = [
     { value: '', label: t.contact.form.selectTopic },
@@ -639,8 +649,43 @@ function ContactForm() {
     setIsSubjectOpen(false);
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    const dataToSend = {
+      ...formData,
+      subject: selectedSubject || 'General Inquiry',
+    };
+
+    console.log('Sending contact form data:', dataToSend);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', phone: '', message: '', newsletter: false });
+        setSelectedSubject('');
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch {
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <form className='space-y-6'>
+    <form className='space-y-6' onSubmit={handleSubmit}>
       <div className='grid md:grid-cols-2 gap-6'>
         <div>
           <label
@@ -654,6 +699,8 @@ function ContactForm() {
             id='name'
             name='name'
             required
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             className='w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors text-gray-900'
             placeholder='Your full name'
           />
@@ -670,6 +717,8 @@ function ContactForm() {
             id='email'
             name='email'
             required
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             className='w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors text-gray-900'
             placeholder='your.email@example.com'
           />
@@ -688,6 +737,8 @@ function ContactForm() {
             type='tel'
             id='phone'
             name='phone'
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             className='w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors text-gray-900'
             placeholder='+385 ...'
           />
@@ -756,6 +807,8 @@ function ContactForm() {
           name='message'
           rows={5}
           required
+          value={formData.message}
+          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
           className='w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors resize-vertical text-gray-900'
           placeholder='Tell us about your inquiry...'
         ></textarea>
@@ -766,6 +819,8 @@ function ContactForm() {
           type='checkbox'
           id='newsletter'
           name='newsletter'
+          checked={formData.newsletter}
+          onChange={(e) => setFormData({ ...formData, newsletter: e.target.checked })}
           className='mt-1 h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded'
         />
         <label htmlFor='newsletter' className='text-sm text-gray-600'>
@@ -773,11 +828,24 @@ function ContactForm() {
         </label>
       </div>
 
+      {submitStatus === 'success' && (
+        <div className='p-4 bg-green-50 border border-green-200 rounded-lg text-green-800'>
+          ✓ Your message has been sent successfully! We&apos;ll get back to you soon.
+        </div>
+      )}
+
+      {submitStatus === 'error' && (
+        <div className='p-4 bg-red-50 border border-red-200 rounded-lg text-red-800'>
+          ✗ Something went wrong. Please try again or contact us directly.
+        </div>
+      )}
+
       <button
         type='submit'
-        className='w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200'
+        disabled={isSubmitting}
+        className='w-full bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white font-bold py-4 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:transform-none disabled:cursor-not-allowed'
       >
-        {t.contact.form.submit}
+        {isSubmitting ? 'Sending...' : t.contact.form.submit}
       </button>
 
       <p className='text-sm text-gray-500 text-center'>
@@ -797,10 +865,9 @@ function Footer() {
         <div className='flex flex-col lg:flex-row lg:justify-between gap-12 mb-12'>
           <div className='flex flex-col items-start'>
             <div className='flex items-center gap-3 mb-6'>
-              <div className='bg-white rounded-full w-12 h-12 flex items-center justify-center'>
-                <Image src='/globe.svg' alt='Logo' width={24} height={24} />
+              <div className='bg-white rounded-xl p-4'>
+                <Image src='/img/logo.svg' alt='Dubrovnik Tours' width={200} height={70} className='h-[70px] w-auto' />
               </div>
-              <span className='sr-only'>Dubrovnik Tours</span>
             </div>
             <div className='space-y-3 text-gray-300 text-left'>
               <div className='flex items-center gap-3 justify-start'>
@@ -930,8 +997,11 @@ export default function Home() {
 
   return (
     <div className='min-h-screen bg-white'>
+      {/* Header */}
+      <Header variant='solid' />
+
       {/* Hero Section with Background Video */}
-      <section className='relative h-screen overflow-hidden'>
+      <section className='relative h-[calc(100vh-80px)] overflow-hidden'>
         {/* Background Video */}
         <video
           autoPlay
@@ -945,9 +1015,6 @@ export default function Home() {
 
         {/* Dark Overlay */}
         <div className='absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60'></div>
-
-        {/* Transparent Header */}
-        <Header variant='transparent' />
 
         {/* Hero Content */}
         <div className='relative z-10 h-full flex items-center justify-center'>

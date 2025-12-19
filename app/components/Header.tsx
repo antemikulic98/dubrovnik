@@ -33,13 +33,13 @@ export default function Header({
               className='inline-flex items-center gap-2'
               aria-label='Home'
             >
-              <span
-                className={`${
-                  isTransparent ? 'bg-white' : 'bg-gray-900'
-                } inline-flex items-center justify-center rounded-full w-10 h-10`}
-              >
-                <Image src='/globe.svg' alt='Logo' width={20} height={20} />
-              </span>
+              <Image
+                src='/img/logo.svg'
+                alt='Dubrovnik Tours'
+                width={200}
+                height={70}
+                className='h-[70px] w-auto'
+              />
               <span className='sr-only'>Dubrovnik Audio Guide</span>
             </Link>
           </div>
@@ -178,10 +178,13 @@ export default function Header({
             className='inline-flex items-center gap-2'
             aria-label='Home'
           >
-            <span className='inline-flex items-center justify-center rounded-full w-9 h-9 bg-gray-900'>
-              <Image src='/globe.svg' alt='Logo' width={18} height={18} />
-            </span>
-            <span className='sr-only'>Dubrovnik Audio Guide</span>
+            <Image
+              src='/img/logo.svg'
+              alt='Dubrovnik Tours'
+              width={160}
+              height={56}
+              className='h-14 w-auto'
+            />
           </Link>
           <button
             className='p-2 text-gray-900'
