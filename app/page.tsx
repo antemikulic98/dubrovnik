@@ -1067,6 +1067,7 @@ export default function Home() {
   const { t } = useLanguage();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   // Force video play on iOS
   useEffect(() => {
@@ -1085,16 +1086,30 @@ export default function Home() {
       try {
         video.muted = true;
         await video.play();
+        setIsVideoReady(true);
       } catch {
         // Autoplay prevented
+      }
+    };
+
+    // Check if video is playing
+    const checkPlaying = () => {
+      if (!video.paused && !video.ended && video.readyState > 2) {
+        setIsVideoReady(true);
       }
     };
 
     // Try multiple times with increasing delays
     attemptPlay();
     setTimeout(attemptPlay, 100);
+    setTimeout(attemptPlay, 300);
     setTimeout(attemptPlay, 500);
     setTimeout(attemptPlay, 1000);
+    setTimeout(attemptPlay, 2000);
+
+    // Check periodically if video started
+    const interval = setInterval(checkPlaying, 100);
+    setTimeout(() => clearInterval(interval), 5000);
 
     // Try to play on any user interaction
     const handleInteraction = () => {
@@ -1105,12 +1120,14 @@ export default function Home() {
     video.addEventListener('loadeddata', attemptPlay);
     video.addEventListener('canplay', attemptPlay);
     video.addEventListener('canplaythrough', attemptPlay);
+    video.addEventListener('playing', () => setIsVideoReady(true));
     document.addEventListener('touchstart', handleInteraction, { passive: true });
     document.addEventListener('touchend', handleInteraction, { passive: true });
     document.addEventListener('scroll', handleInteraction, { passive: true });
     document.addEventListener('click', handleInteraction, { passive: true });
 
     return () => {
+      clearInterval(interval);
       video.removeEventListener('loadeddata', attemptPlay);
       video.removeEventListener('canplay', attemptPlay);
       video.removeEventListener('canplaythrough', attemptPlay);
@@ -1144,11 +1161,26 @@ export default function Home() {
           <source src='/video/cover.mp4' type='video/mp4' />
         </video>
 
+        {/* Cover overlay to hide play button until video plays */}
+        {!isVideoReady && (
+          <div 
+            className='absolute inset-0 bg-gray-900 z-[1] flex items-center justify-center'
+            onClick={() => videoRef.current?.play()}
+          >
+            <div className='animate-pulse text-white/50'>
+              <svg className='w-16 h-16 animate-spin' fill='none' viewBox='0 0 24 24'>
+                <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4'></circle>
+                <path className='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'></path>
+              </svg>
+            </div>
+          </div>
+        )}
+
         {/* Dark Overlay */}
-        <div className='absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60'></div>
+        <div className='absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60 z-[2]'></div>
 
         {/* Hero Content */}
-        <div className='relative z-10 h-full flex items-center justify-center'>
+        <div className='relative z-[10] h-full flex items-center justify-center'>
           <div className='text-center text-white max-w-4xl mx-auto px-4'>
             <h1 className='font-display text-5xl md:text-7xl lg:text-8xl mb-6 leading-none tracking-widest'>
               {t.hero.title} <br />
