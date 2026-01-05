@@ -1071,28 +1071,46 @@ export default function Home() {
   // Force video play on iOS
   useEffect(() => {
     const video = videoRef.current;
-    if (video) {
-      // Try to play video
-      const playVideo = async () => {
-        try {
-          await video.play();
-        } catch {
-          // Autoplay was prevented, try on user interaction
-          const handleInteraction = async () => {
-            try {
-              await video.play();
-              document.removeEventListener('touchstart', handleInteraction);
-              document.removeEventListener('click', handleInteraction);
-            } catch {
-              // Still failed, ignore
-            }
-          };
-          document.addEventListener('touchstart', handleInteraction, { once: true });
-          document.addEventListener('click', handleInteraction, { once: true });
-        }
-      };
-      playVideo();
+    if (!video) return;
+
+    // Ensure video is muted (required for iOS autoplay)
+    video.muted = true;
+    video.defaultMuted = true;
+    
+    // Function to attempt play
+    const attemptPlay = () => {
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay prevented, will try again on interaction
+        });
+      }
+    };
+
+    // Try to play when video data is loaded
+    const handleCanPlay = () => {
+      attemptPlay();
+    };
+
+    // Try to play on any user interaction
+    const handleInteraction = () => {
+      attemptPlay();
+    };
+
+    video.addEventListener('canplay', handleCanPlay);
+    document.addEventListener('touchstart', handleInteraction, { passive: true });
+    document.addEventListener('scroll', handleInteraction, { passive: true });
+
+    // Also try immediately
+    if (video.readyState >= 3) {
+      attemptPlay();
     }
+
+    return () => {
+      video.removeEventListener('canplay', handleCanPlay);
+      document.removeEventListener('touchstart', handleInteraction);
+      document.removeEventListener('scroll', handleInteraction);
+    };
   }, []);
 
   return (
@@ -1109,7 +1127,7 @@ export default function Home() {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
           className='absolute inset-0 w-full h-full object-cover'
         >
           <source src='/video/cover.mp4' type='video/mp4' />
