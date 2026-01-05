@@ -1076,40 +1076,48 @@ export default function Home() {
     // Ensure video is muted (required for iOS autoplay)
     video.muted = true;
     video.defaultMuted = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
     
     // Function to attempt play
-    const attemptPlay = () => {
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Autoplay prevented, will try again on interaction
-        });
+    const attemptPlay = async () => {
+      try {
+        video.muted = true;
+        await video.play();
+      } catch {
+        // Autoplay prevented
       }
     };
 
-    // Try to play when video data is loaded
-    const handleCanPlay = () => {
-      attemptPlay();
-    };
+    // Try multiple times with increasing delays
+    attemptPlay();
+    setTimeout(attemptPlay, 100);
+    setTimeout(attemptPlay, 500);
+    setTimeout(attemptPlay, 1000);
 
     // Try to play on any user interaction
     const handleInteraction = () => {
       attemptPlay();
     };
 
-    video.addEventListener('canplay', handleCanPlay);
+    // Listen for various events
+    video.addEventListener('loadeddata', attemptPlay);
+    video.addEventListener('canplay', attemptPlay);
+    video.addEventListener('canplaythrough', attemptPlay);
     document.addEventListener('touchstart', handleInteraction, { passive: true });
+    document.addEventListener('touchend', handleInteraction, { passive: true });
     document.addEventListener('scroll', handleInteraction, { passive: true });
-
-    // Also try immediately
-    if (video.readyState >= 3) {
-      attemptPlay();
-    }
+    document.addEventListener('click', handleInteraction, { passive: true });
 
     return () => {
-      video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('loadeddata', attemptPlay);
+      video.removeEventListener('canplay', attemptPlay);
+      video.removeEventListener('canplaythrough', attemptPlay);
       document.removeEventListener('touchstart', handleInteraction);
+      document.removeEventListener('touchend', handleInteraction);
       document.removeEventListener('scroll', handleInteraction);
+      document.removeEventListener('click', handleInteraction);
     };
   }, []);
 
@@ -1119,7 +1127,7 @@ export default function Home() {
       <Header variant='solid' />
 
       {/* Hero Section with Background Video */}
-      <section className='relative h-[70vh] md:h-[80vh] overflow-hidden'>
+      <section className='relative h-[80vh] md:h-[90vh] overflow-hidden'>
         {/* Background Video */}
         <video
           ref={videoRef}
@@ -1127,8 +1135,11 @@ export default function Home() {
           muted
           loop
           playsInline
-          preload="metadata"
-          className='absolute inset-0 w-full h-full object-cover'
+          preload="auto"
+          controls={false}
+          disablePictureInPicture
+          className='absolute inset-0 w-full h-full object-cover [&::-webkit-media-controls]:hidden [&::-webkit-media-controls-enclosure]:hidden [&::-webkit-media-controls-panel]:hidden'
+          style={{ pointerEvents: 'none' }}
         >
           <source src='/video/cover.mp4' type='video/mp4' />
         </video>
