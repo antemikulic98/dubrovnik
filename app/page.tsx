@@ -1,9 +1,80 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Header from './components/Header';
 import { useLanguage } from './lib/LanguageContext';
+
+// Video Modal Component
+function VideoModal({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (isOpen && videoRef.current) {
+      videoRef.current.play();
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className='fixed inset-0 z-50 flex items-center justify-center'>
+      {/* Backdrop */}
+      <div
+        className='absolute inset-0 bg-black/90 backdrop-blur-sm'
+        onClick={onClose}
+      />
+
+      {/* Modal Content */}
+      <div className='relative z-10 w-full max-w-6xl mx-4'>
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className='absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors'
+          aria-label='Close video'
+        >
+          <svg className='w-8 h-8' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+          </svg>
+        </button>
+
+        {/* Video Container - 16:9 aspect ratio */}
+        <div className='relative w-full aspect-video bg-black rounded-lg overflow-hidden shadow-2xl'>
+          <video
+            ref={videoRef}
+            controls
+            autoPlay
+            playsInline
+            className='w-full h-full object-contain'
+          >
+            <source src='/video/cover.mp4' type='video/mp4' />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // Custom Tour Modal Component
 function CustomTourModal({
@@ -994,6 +1065,35 @@ function Footer() {
 
 export default function Home() {
   const { t } = useLanguage();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+
+  // Force video play on iOS
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      // Try to play video
+      const playVideo = async () => {
+        try {
+          await video.play();
+        } catch {
+          // Autoplay was prevented, try on user interaction
+          const handleInteraction = async () => {
+            try {
+              await video.play();
+              document.removeEventListener('touchstart', handleInteraction);
+              document.removeEventListener('click', handleInteraction);
+            } catch {
+              // Still failed, ignore
+            }
+          };
+          document.addEventListener('touchstart', handleInteraction, { once: true });
+          document.addEventListener('click', handleInteraction, { once: true });
+        }
+      };
+      playVideo();
+    }
+  }, []);
 
   return (
     <div className='min-h-screen bg-white'>
@@ -1001,13 +1101,17 @@ export default function Home() {
       <Header variant='solid' />
 
       {/* Hero Section with Background Video */}
-      <section className='relative h-[calc(100vh-80px)] overflow-hidden'>
+      <section className='relative h-[70vh] md:h-[80vh] overflow-hidden'>
         {/* Background Video */}
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
+          // @ts-expect-error - webkit-playsinline is needed for older iOS
+          webkit-playsinline="true"
+          preload="auto"
           className='absolute inset-0 w-full h-full object-cover'
         >
           <source src='/video/cover.mp4' type='video/mp4' />
@@ -1033,7 +1137,13 @@ export default function Home() {
               >
                 {t.hero.exploreTours}
               </a>
-              <button className='border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-lg text-lg transition-colors'>
+              <button 
+                onClick={() => setIsVideoModalOpen(true)}
+                className='border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-lg text-lg transition-colors flex items-center gap-2 justify-center'
+              >
+                <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 20 20'>
+                  <path fillRule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z' clipRule='evenodd' />
+                </svg>
                 {t.hero.watchVideo}
               </button>
             </div>
@@ -1131,6 +1241,9 @@ export default function Home() {
 
       {/* Footer */}
       <Footer />
+
+      {/* Video Modal */}
+      <VideoModal isOpen={isVideoModalOpen} onClose={() => setIsVideoModalOpen(false)} />
     </div>
   );
 }
