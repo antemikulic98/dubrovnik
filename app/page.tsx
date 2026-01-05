@@ -1153,31 +1153,38 @@ export default function Home() {
           loop
           playsInline
           preload="auto"
-          controls={false}
-          disablePictureInPicture
-          className='absolute inset-0 w-full h-full object-cover [&::-webkit-media-controls]:hidden [&::-webkit-media-controls-enclosure]:hidden [&::-webkit-media-controls-panel]:hidden'
-          style={{ pointerEvents: 'none' }}
+          className='absolute inset-0 w-full h-full object-cover'
         >
           <source src='/video/cover.mp4' type='video/mp4' />
         </video>
 
-        {/* Cover overlay to hide play button until video plays */}
+        {/* Play Button - shows only if video didn't autoplay */}
         {!isVideoReady && (
-          <div 
-            className='absolute inset-0 bg-gray-900 z-[1] flex items-center justify-center'
-            onClick={() => videoRef.current?.play()}
+          <button
+            onClick={async () => {
+              const video = videoRef.current;
+              if (video) {
+                video.muted = true;
+                try {
+                  await video.play();
+                  setIsVideoReady(true);
+                } catch {
+                  // ignore
+                }
+              }
+            }}
+            className='absolute inset-0 z-[3] flex items-center justify-center bg-black/40 cursor-pointer transition-opacity hover:bg-black/50'
           >
-            <div className='animate-pulse text-white/50'>
-              <svg className='w-16 h-16 animate-spin' fill='none' viewBox='0 0 24 24'>
-                <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4'></circle>
-                <path className='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'></path>
+            <div className='w-20 h-20 bg-white/90 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform'>
+              <svg className='w-10 h-10 text-gray-900 ml-1' fill='currentColor' viewBox='0 0 20 20'>
+                <path d='M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z' />
               </svg>
             </div>
-          </div>
+          </button>
         )}
 
         {/* Dark Overlay */}
-        <div className='absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60 z-[2]'></div>
+        <div className='absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60 z-[2] pointer-events-none'></div>
 
         {/* Hero Content */}
         <div className='relative z-[10] h-full flex items-center justify-center'>
