@@ -1109,8 +1109,6 @@ export default function Home() {
           muted
           loop
           playsInline
-          // @ts-expect-error - webkit-playsinline is needed for older iOS
-          webkit-playsinline="true"
           preload="auto"
           className='absolute inset-0 w-full h-full object-cover'
         >
