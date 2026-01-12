@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Header from '@/app/components/Header';
+import Footer from '@/app/components/Footer';
 import { useLanguage } from '@/app/lib/LanguageContext';
 import { use } from 'react';
 
@@ -26,15 +27,14 @@ const blogPostsData = {
   'hidden-gems-old-town': {
     key: 'oldTown' as const,
     image:
-      'https://images.unsplash.com/photo-1555990538-1e6c2e3c9c71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
+      'https://images.unsplash.com/photo-1555990793-da11153b2473?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
     category: 'culture' as const,
     date: '2024-11-01',
     relatedSlugs: ['best-restaurants-dubrovnik', 'best-beaches-dubrovnik'],
   },
   'best-beaches-dubrovnik': {
     key: 'beaches' as const,
-    image:
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
+    image: '/img/dubrovnik/dubrovnik22.jpg',
     category: 'travel' as const,
     date: '2024-10-20',
     relatedSlugs: ['hidden-gems-old-town', 'best-wineries-peljesac'],
@@ -204,32 +204,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
       </section>
 
       {/* Footer */}
-      <footer className='bg-gray-900 text-white py-12'>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-          <div className='flex flex-col md:flex-row justify-between items-center gap-6'>
-            <div className='flex items-center gap-3'>
-              <div className='bg-white rounded-xl p-4'>
-                <Image src='/img/logo.svg' alt='Dubrovnik Tours' width={200} height={70} className='h-[70px] w-auto' />
-              </div>
-            </div>
-            <div className='flex gap-6'>
-              <Link
-                href='/'
-                className='text-gray-300 hover:text-white transition-colors'
-              >
-                {t.nav.tours}
-              </Link>
-              <Link
-                href='/blog'
-                className='text-gray-300 hover:text-white transition-colors'
-              >
-                {t.nav.blog}
-              </Link>
-            </div>
-            <div className='text-gray-400 text-sm'>{t.footer.copyright}</div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

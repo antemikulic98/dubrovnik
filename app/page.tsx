@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import { useLanguage } from './lib/LanguageContext';
 
 // Video Modal Component
@@ -53,8 +54,18 @@ function VideoModal({
           className='absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors'
           aria-label='Close video'
         >
-          <svg className='w-8 h-8' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+          <svg
+            className='w-8 h-8'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={2}
+              d='M6 18L18 6M6 6l12 12'
+            />
           </svg>
         </button>
 
@@ -67,7 +78,7 @@ function VideoModal({
             playsInline
             className='w-full h-full object-contain'
           >
-            <source src='/video/cover.mp4' type='video/mp4' />
+            <source src='/video/cover1.mp4' type='video/mp4' />
             Your browser does not support the video tag.
           </video>
         </div>
@@ -454,6 +465,18 @@ function CustomTourModal({
 function FeaturedTours() {
   const { t } = useLanguage();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [customTourImageIndex, setCustomTourImageIndex] = useState(0);
+  const customTourImages = [
+    '/img/dubrovnik/dubrovnik5.jpg',
+    '/img/dubrovnik/dubrovnik15.jpg',
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCustomTourImageIndex((prev) => (prev + 1) % customTourImages.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [customTourImages.length]);
 
   return (
     <>
@@ -477,12 +500,11 @@ function FeaturedTours() {
             <div className='bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col'>
               <div className='relative h-56'>
                 <Image
-                  src='https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'
+                  src='https://images.unsplash.com/photo-1555990793-da11153b2473?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'
                   alt={t.audioGuideTour.title}
                   fill
                   sizes='(max-width: 1024px) 100vw, 33vw'
                   className='object-cover'
-                  unoptimized
                 />
                 <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent'></div>
                 <div className='absolute top-4 left-4'>
@@ -546,12 +568,11 @@ function FeaturedTours() {
             <div className='bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col'>
               <div className='relative h-56'>
                 <Image
-                  src='https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'
+                  src='/img/peljesac/peljesac1.jpg'
                   alt={t.wineTour.title}
                   fill
                   sizes='(max-width: 1024px) 100vw, 33vw'
                   className='object-cover'
-                  unoptimized
                 />
                 <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent'></div>
                 <div className='absolute top-4 left-4'>
@@ -614,14 +635,20 @@ function FeaturedTours() {
             {/* Custom Tour Card */}
             <div className='bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col'>
               <div className='relative h-56'>
-                <Image
-                  src='https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'
-                  alt={t.customTour.title}
-                  fill
-                  sizes='(max-width: 1024px) 100vw, 33vw'
-                  className='object-cover'
-                  unoptimized
-                />
+                {customTourImages.map((img, index) => (
+                  <Image
+                    key={img}
+                    src={img}
+                    alt={t.customTour.title}
+                    fill
+                    sizes='(max-width: 1024px) 100vw, 33vw'
+                    className={`object-cover transition-opacity duration-1000 ${
+                      index === customTourImageIndex
+                        ? 'opacity-100'
+                        : 'opacity-0'
+                    }`}
+                  />
+                ))}
                 <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent'></div>
                 <div className='absolute top-4 left-4'>
                   <span className='bg-purple-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg'>
@@ -697,7 +724,9 @@ function ContactForm() {
   const [selectedSubject, setSelectedSubject] = useState('');
   const [isSubjectOpen, setIsSubjectOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<
+    'idle' | 'success' | 'error'
+  >('idle');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -743,7 +772,13 @@ function ContactForm() {
 
       if (response.ok) {
         setSubmitStatus('success');
-        setFormData({ name: '', email: '', phone: '', message: '', newsletter: false });
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          message: '',
+          newsletter: false,
+        });
         setSelectedSubject('');
       } else {
         setSubmitStatus('error');
@@ -789,7 +824,9 @@ function ContactForm() {
             name='email'
             required
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
             className='w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors text-gray-900'
             placeholder='your.email@example.com'
           />
@@ -809,7 +846,9 @@ function ContactForm() {
             id='phone'
             name='phone'
             value={formData.phone}
-            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, phone: e.target.value })
+            }
             className='w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors text-gray-900'
             placeholder='+385 ...'
           />
@@ -879,7 +918,9 @@ function ContactForm() {
           rows={5}
           required
           value={formData.message}
-          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, message: e.target.value })
+          }
           className='w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors resize-vertical text-gray-900'
           placeholder='Tell us about your inquiry...'
         ></textarea>
@@ -891,7 +932,9 @@ function ContactForm() {
           id='newsletter'
           name='newsletter'
           checked={formData.newsletter}
-          onChange={(e) => setFormData({ ...formData, newsletter: e.target.checked })}
+          onChange={(e) =>
+            setFormData({ ...formData, newsletter: e.target.checked })
+          }
           className='mt-1 h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded'
         />
         <label htmlFor='newsletter' className='text-sm text-gray-600'>
@@ -901,7 +944,8 @@ function ContactForm() {
 
       {submitStatus === 'success' && (
         <div className='p-4 bg-green-50 border border-green-200 rounded-lg text-green-800'>
-          ✓ Your message has been sent successfully! We&apos;ll get back to you soon.
+          ✓ Your message has been sent successfully! We&apos;ll get back to you
+          soon.
         </div>
       )}
 
@@ -926,143 +970,6 @@ function ContactForm() {
   );
 }
 
-function Footer() {
-  const { t } = useLanguage();
-
-  return (
-    <footer className='bg-gray-900 text-white py-16'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        {/* Logo and Contact */}
-        <div className='flex flex-col lg:flex-row lg:justify-between gap-12 mb-12'>
-          <div className='flex flex-col items-start'>
-            <div className='flex items-center gap-3 mb-6'>
-              <div className='bg-white rounded-xl p-4'>
-                <Image src='/img/logo.svg' alt='Dubrovnik Tours' width={200} height={70} className='h-[70px] w-auto' />
-              </div>
-            </div>
-            <div className='space-y-3 text-gray-300 text-left'>
-              <div className='flex items-center gap-3 justify-start'>
-                <svg
-                  className='w-5 h-5 text-white'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z'
-                  />
-                </svg>
-                <span>+385 91 135 9914</span>
-              </div>
-              <div className='flex items-center gap-3 justify-start'>
-                <svg
-                  className='w-5 h-5 text-white'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'
-                  />
-                </svg>
-                <span>hello@dubrovnik-tours.com</span>
-              </div>
-              <div className='flex items-center gap-3 justify-start'>
-                <svg
-                  className='w-5 h-5 text-white'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z'
-                  />
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M15 11a3 3 0 11-6 0 3 3 0 016 0z'
-                  />
-                </svg>
-                <span>Dubrovnik, Croatia</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Links Grid */}
-          <div className='grid md:grid-cols-2 gap-8 lg:gap-12'>
-            <div>
-              <h4 className='font-bold mb-6 text-lg'>{t.footer.followUs}</h4>
-              <div className='space-y-3'>
-                <a
-                  href='#'
-                  className='block text-gray-300 hover:text-white transition-colors'
-                >
-                  Instagram
-                </a>
-                <a
-                  href='#'
-                  className='block text-gray-300 hover:text-white transition-colors'
-                >
-                  Facebook
-                </a>
-                <a
-                  href='#'
-                  className='block text-gray-300 hover:text-white transition-colors'
-                >
-                  YouTube
-                </a>
-                <a
-                  href='#'
-                  className='block text-gray-300 hover:text-white transition-colors'
-                >
-                  TripAdvisor
-                </a>
-              </div>
-            </div>
-            <div>
-              <h4 className='font-bold mb-6 text-lg'>
-                {t.footer.popularTours}
-              </h4>
-              <div className='space-y-3'>
-                <Link
-                  href='/tours/audio-guide'
-                  className='block text-gray-300 hover:text-white transition-colors'
-                >
-                  {t.footer.audioGuideTour}
-                </Link>
-                <Link
-                  href='/tours/wine-tour'
-                  className='block text-gray-300 hover:text-white transition-colors'
-                >
-                  {t.footer.wineTour}
-                </Link>
-                <button className='block text-gray-300 hover:text-white transition-colors text-left'>
-                  {t.footer.customTour}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Copyright */}
-        <div className='border-t border-gray-700 pt-8 text-center'>
-          <p className='text-gray-400'>{t.footer.copyright}</p>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
 export default function Home() {
   const { t } = useLanguage();
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -1080,7 +987,7 @@ export default function Home() {
     video.setAttribute('muted', '');
     video.setAttribute('playsinline', '');
     video.setAttribute('webkit-playsinline', '');
-    
+
     // Function to attempt play
     const attemptPlay = async () => {
       try {
@@ -1121,7 +1028,9 @@ export default function Home() {
     video.addEventListener('canplay', attemptPlay);
     video.addEventListener('canplaythrough', attemptPlay);
     video.addEventListener('playing', () => setIsVideoReady(true));
-    document.addEventListener('touchstart', handleInteraction, { passive: true });
+    document.addEventListener('touchstart', handleInteraction, {
+      passive: true,
+    });
     document.addEventListener('touchend', handleInteraction, { passive: true });
     document.addEventListener('scroll', handleInteraction, { passive: true });
     document.addEventListener('click', handleInteraction, { passive: true });
@@ -1152,10 +1061,10 @@ export default function Home() {
           muted
           loop
           playsInline
-          preload="auto"
+          preload='auto'
           className='absolute inset-0 w-full h-full object-cover'
         >
-          <source src='/video/cover.mp4' type='video/mp4' />
+          <source src='/video/cover1.mp4' type='video/mp4' />
         </video>
 
         {/* Play Button - shows only if video didn't autoplay */}
@@ -1176,7 +1085,11 @@ export default function Home() {
             className='absolute inset-0 z-[3] flex items-center justify-center bg-black/40 cursor-pointer transition-opacity hover:bg-black/50'
           >
             <div className='w-20 h-20 bg-white/90 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform'>
-              <svg className='w-10 h-10 text-gray-900 ml-1' fill='currentColor' viewBox='0 0 20 20'>
+              <svg
+                className='w-10 h-10 text-gray-900 ml-1'
+                fill='currentColor'
+                viewBox='0 0 20 20'
+              >
                 <path d='M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z' />
               </svg>
             </div>
@@ -1203,12 +1116,20 @@ export default function Home() {
               >
                 {t.hero.exploreTours}
               </a>
-              <button 
+              <button
                 onClick={() => setIsVideoModalOpen(true)}
                 className='border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-lg text-lg transition-colors flex items-center gap-2 justify-center'
               >
-                <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 20 20'>
-                  <path fillRule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z' clipRule='evenodd' />
+                <svg
+                  className='w-6 h-6'
+                  fill='currentColor'
+                  viewBox='0 0 20 20'
+                >
+                  <path
+                    fillRule='evenodd'
+                    d='M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z'
+                    clipRule='evenodd'
+                  />
                 </svg>
                 {t.hero.watchVideo}
               </button>
@@ -1309,7 +1230,10 @@ export default function Home() {
       <Footer />
 
       {/* Video Modal */}
-      <VideoModal isOpen={isVideoModalOpen} onClose={() => setIsVideoModalOpen(false)} />
+      <VideoModal
+        isOpen={isVideoModalOpen}
+        onClose={() => setIsVideoModalOpen(false)}
+      />
     </div>
   );
 }

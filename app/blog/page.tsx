@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import { useLanguage } from '../lib/LanguageContext';
 
 const blogPosts = [
@@ -26,15 +27,14 @@ const blogPosts = [
     slug: 'hidden-gems-old-town',
     key: 'oldTown' as const,
     image:
-      'https://images.unsplash.com/photo-1555990538-1e6c2e3c9c71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
+      'https://images.unsplash.com/photo-1555990793-da11153b2473?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
     category: 'culture' as const,
     date: '2024-11-01',
   },
   {
     slug: 'best-beaches-dubrovnik',
     key: 'beaches' as const,
-    image:
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
+    image: '/img/dubrovnik/dubrovnik22.jpg',
     category: 'travel' as const,
     date: '2024-10-20',
   },
@@ -47,15 +47,25 @@ export default function BlogPage() {
     <div className='min-h-screen bg-white'>
       <Header variant='solid' />
 
-      {/* Hero Section */}
-      <section className='bg-gray-900 py-20'>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
-          <h1 className='text-4xl md:text-6xl font-bold text-white mb-6'>
-            {t.blog.title}
-          </h1>
-          <p className='font-body text-xl text-gray-300 max-w-3xl mx-auto'>
-            {t.blog.subtitle}
-          </p>
+      {/* Hero Section with Image */}
+      <section className='relative h-[50vh] overflow-hidden'>
+        <Image
+          src='/img/dubrovnik/dubrovnik15.jpg'
+          alt='Dubrovnik Blog'
+          fill
+          className='object-cover'
+          priority
+        />
+        <div className='absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20'></div>
+        <div className='absolute inset-0 flex items-center justify-center'>
+          <div className='text-center text-white max-w-4xl mx-auto px-4'>
+            <h1 className='text-4xl md:text-6xl font-bold mb-4'>
+              {t.blog.title}
+            </h1>
+            <p className='font-body text-lg md:text-xl text-white/90 max-w-2xl mx-auto'>
+              {t.blog.subtitle}
+            </p>
+          </div>
         </div>
       </section>
 
@@ -123,40 +133,7 @@ export default function BlogPage() {
       </section>
 
       {/* Footer */}
-      <BlogFooter />
+      <Footer />
     </div>
-  );
-}
-
-function BlogFooter() {
-  const { t } = useLanguage();
-
-  return (
-    <footer className='bg-gray-900 text-white py-12'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='flex flex-col md:flex-row justify-between items-center gap-6'>
-          <div className='flex items-center gap-3'>
-            <div className='bg-white rounded-xl p-4'>
-              <Image src='/img/logo.svg' alt='Dubrovnik Tours' width={200} height={70} className='h-[70px] w-auto' />
-            </div>
-          </div>
-          <div className='flex gap-6'>
-            <Link
-              href='/'
-              className='text-gray-300 hover:text-white transition-colors'
-            >
-              {t.nav.tours}
-            </Link>
-            <Link
-              href='/blog'
-              className='text-gray-300 hover:text-white transition-colors'
-            >
-              {t.nav.blog}
-            </Link>
-          </div>
-          <div className='text-gray-400 text-sm'>{t.footer.copyright}</div>
-        </div>
-      </div>
-    </footer>
   );
 }

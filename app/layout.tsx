@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Lato, Bebas_Neue } from 'next/font/google';
 import './globals.css';
 import { LanguageProvider } from './lib/LanguageContext';
+import AppWrapper from './components/AppWrapper';
 
 const lato = Lato({
   variable: '--font-lato',
@@ -33,7 +34,9 @@ export default function RootLayout({
       <body
         className={`${lato.variable} ${bebasNeue.variable} font-sans antialiased`}
       >
-        <LanguageProvider>{children}</LanguageProvider>
+        <LanguageProvider>
+          <AppWrapper>{children}</AppWrapper>
+        </LanguageProvider>
       </body>
     </html>
   );

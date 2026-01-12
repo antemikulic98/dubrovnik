@@ -4,11 +4,273 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
 import Header from '@/app/components/Header';
+import Footer from '@/app/components/Footer';
 import { useLanguage } from '@/app/lib/LanguageContext';
-import { use } from 'react';
+import { use, useState, useEffect, useCallback } from 'react';
 
 interface TourPageProps {
   params: Promise<{ id: string }>;
+}
+
+// Dubrovnik images for Audio Guide Tour
+const dubrovnikImages = Array.from({ length: 32 }, (_, i) => `/img/dubrovnik/dubrovnik${i + 1}.jpg`);
+
+// Pelješac images for Wine Tour
+const peljesacImages = Array.from({ length: 171 }, (_, i) => `/img/peljesac/peljesac${i + 1}.jpg`);
+
+// Hero Slideshow Component
+function HeroSlideshow({ images, title, badge, badgeColor, shortDescription }: {
+  images: string[];
+  title: string;
+  badge: string;
+  badgeColor: string;
+  shortDescription: string;
+}) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Use first 8 images for hero slideshow
+  const heroImages = images.slice(0, 8);
+
+  const goToSlide = useCallback((index: number) => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentIndex(index);
+    setTimeout(() => setIsTransitioning(false), 700);
+  }, [isTransitioning]);
+
+  const nextSlide = useCallback(() => {
+    goToSlide((currentIndex + 1) % heroImages.length);
+  }, [currentIndex, heroImages.length, goToSlide]);
+
+  const prevSlide = useCallback(() => {
+    goToSlide((currentIndex - 1 + heroImages.length) % heroImages.length);
+  }, [currentIndex, heroImages.length, goToSlide]);
+
+  // Auto-advance slideshow
+  useEffect(() => {
+    const timer = setInterval(nextSlide, 5000);
+    return () => clearInterval(timer);
+  }, [nextSlide]);
+
+  return (
+    <section className='relative h-[70vh] overflow-hidden'>
+      {/* Slideshow Images */}
+      {heroImages.map((img, index) => (
+        <div
+          key={img}
+          className={`absolute inset-0 transition-opacity duration-700 ${
+            index === currentIndex ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <Image
+            src={img}
+            alt={`${title} - ${index + 1}`}
+            fill
+            className='object-cover'
+            priority={index === 0}
+          />
+        </div>
+      ))}
+      
+      {/* Gradient Overlay */}
+      <div className='absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10'></div>
+      
+      {/* Navigation Arrows */}
+      <button
+        onClick={prevSlide}
+        className='absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 backdrop-blur-sm rounded-full p-3 transition-all'
+        aria-label='Previous slide'
+      >
+        <svg className='w-6 h-6 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
+        </svg>
+      </button>
+      <button
+        onClick={nextSlide}
+        className='absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 backdrop-blur-sm rounded-full p-3 transition-all'
+        aria-label='Next slide'
+      >
+        <svg className='w-6 h-6 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+        </svg>
+      </button>
+      
+      {/* Dots Indicator */}
+      <div className='absolute bottom-24 left-1/2 -translate-x-1/2 z-20 flex gap-2'>
+        {heroImages.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className={`w-2 h-2 rounded-full transition-all ${
+              index === currentIndex ? 'bg-white w-6' : 'bg-white/50 hover:bg-white/70'
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
+      
+      {/* Content */}
+      <div className='absolute inset-0 flex items-center justify-center z-10'>
+        <div className='text-center text-white max-w-4xl mx-auto px-4'>
+          <div className={`inline-block ${badgeColor} text-white px-6 py-2 rounded-full text-sm font-bold mb-6 shadow-lg font-body`}>
+            {badge}
+          </div>
+          <h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 leading-tight px-4'>
+            {title}
+          </h1>
+          <p className='font-body text-base sm:text-lg md:text-xl opacity-90 max-w-2xl mx-auto leading-relaxed px-4'>
+            {shortDescription}
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Photo Gallery Component
+function PhotoGallery({ images, title }: { images: string[]; title: string }) {
+  const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [visibleCount, setVisibleCount] = useState(12);
+  
+  // Skip first 8 used in hero, show the rest
+  const galleryImages = images.slice(8);
+
+  const openLightbox = (index: number) => {
+    setSelectedImage(index);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeLightbox = () => {
+    setSelectedImage(null);
+    document.body.style.overflow = 'unset';
+  };
+
+  const goToNext = () => {
+    if (selectedImage !== null) {
+      setSelectedImage((selectedImage + 1) % galleryImages.length);
+    }
+  };
+
+  const goToPrev = () => {
+    if (selectedImage !== null) {
+      setSelectedImage((selectedImage - 1 + galleryImages.length) % galleryImages.length);
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedImage === null) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') goToNext();
+      if (e.key === 'ArrowLeft') goToPrev();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  });
+
+  const loadMore = () => {
+    setVisibleCount(prev => Math.min(prev + 12, galleryImages.length));
+  };
+
+  if (galleryImages.length === 0) return null;
+
+  return (
+    <section className='py-16 bg-white'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <h2 className='text-3xl font-bold text-gray-900 mb-8 text-center'>
+          Photo Gallery
+        </h2>
+        
+        {/* Gallery Grid */}
+        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+          {galleryImages.slice(0, visibleCount).map((img, index) => (
+            <div
+              key={img}
+              className='relative aspect-square rounded-xl overflow-hidden cursor-pointer group'
+              onClick={() => openLightbox(index)}
+            >
+              <Image
+                src={img}
+                alt={`${title} - Photo ${index + 1}`}
+                fill
+                className='object-cover transition-transform duration-300 group-hover:scale-110'
+                sizes='(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw'
+              />
+              <div className='absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center'>
+                <svg
+                  className='w-10 h-10 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7' />
+                </svg>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Load More Button */}
+        {visibleCount < galleryImages.length && (
+          <div className='text-center mt-8'>
+            <button
+              onClick={loadMore}
+              className='font-body bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold px-8 py-3 rounded-xl transition-colors'
+            >
+              Load More Photos ({galleryImages.length - visibleCount} remaining)
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Lightbox */}
+      {selectedImage !== null && (
+        <div className='fixed inset-0 z-50 bg-black/95 flex items-center justify-center'>
+          <button
+            onClick={closeLightbox}
+            className='absolute top-4 right-4 text-white hover:text-gray-300 z-10'
+          >
+            <svg className='w-8 h-8' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+            </svg>
+          </button>
+          
+          <button
+            onClick={goToPrev}
+            className='absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 bg-white/10 hover:bg-white/20 rounded-full p-3 transition-all'
+          >
+            <svg className='w-8 h-8' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
+            </svg>
+          </button>
+          
+          <button
+            onClick={goToNext}
+            className='absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 bg-white/10 hover:bg-white/20 rounded-full p-3 transition-all'
+          >
+            <svg className='w-8 h-8' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+            </svg>
+          </button>
+
+          <div className='relative w-full h-full max-w-6xl max-h-[80vh] mx-4'>
+            <Image
+              src={galleryImages[selectedImage]}
+              alt={`${title} - Photo ${selectedImage + 1}`}
+              fill
+              className='object-contain'
+              sizes='100vw'
+            />
+          </div>
+
+          <div className='absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm'>
+            {selectedImage + 1} / {galleryImages.length}
+          </div>
+        </div>
+      )}
+    </section>
+  );
 }
 
 function AudioGuideTourPage() {
@@ -18,31 +280,14 @@ function AudioGuideTourPage() {
     <div className='min-h-screen bg-white'>
       <Header variant='solid' />
 
-      {/* Hero Section */}
-      <section className='relative h-[70vh] overflow-hidden'>
-        <Image
-          src='https://images.unsplash.com/photo-1590001155093-a3c66ab0c3ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'
-          alt={t.audioGuideTour.title}
-          fill
-          className='object-cover'
-          priority
-          unoptimized
-        />
-        <div className='absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10'></div>
-        <div className='absolute inset-0 flex items-center justify-center'>
-          <div className='text-center text-white max-w-4xl mx-auto px-4'>
-            <div className='inline-block bg-amber-500 text-white px-6 py-2 rounded-full text-sm font-bold mb-6 shadow-lg'>
-              {t.audioGuideTour.badge}
-            </div>
-            <h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 leading-tight px-4'>
-              {t.audioGuideTour.title}
-            </h1>
-            <p className='text-base sm:text-lg md:text-xl opacity-90 max-w-2xl mx-auto leading-relaxed px-4'>
-              {t.audioGuideTour.shortDescription}
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* Hero Slideshow */}
+      <HeroSlideshow
+        images={dubrovnikImages}
+        title={t.audioGuideTour.title}
+        badge={t.audioGuideTour.badge}
+        badgeColor='bg-amber-500'
+        shortDescription={t.audioGuideTour.shortDescription}
+      />
 
       {/* Tour Info & Booking */}
       <section className='py-12 bg-gray-50'>
@@ -54,7 +299,7 @@ function AudioGuideTourPage() {
                 <h2 className='text-2xl lg:text-3xl font-bold text-gray-900 mb-6'>
                   {t.tourDetail.aboutTour}
                 </h2>
-                <p className='text-gray-700 text-lg leading-relaxed mb-8'>
+                <p className='font-body text-gray-700 text-lg leading-relaxed mb-8'>
                   {t.audioGuideTour.fullDescription}
                 </p>
 
@@ -64,7 +309,7 @@ function AudioGuideTourPage() {
                     <h3 className='text-xl font-bold text-gray-900 mb-3'>
                       {t.audioGuideTour.oldTownTourTitle}
                     </h3>
-                    <p className='text-gray-700 mb-4'>
+                    <p className='font-body text-gray-700 mb-4'>
                       {t.audioGuideTour.oldTownTourDescription}
                     </p>
                     <div className='flex items-center gap-2 text-blue-700 font-medium'>
@@ -86,7 +331,7 @@ function AudioGuideTourPage() {
                     <h3 className='text-xl font-bold text-gray-900 mb-3'>
                       {t.audioGuideTour.cityWallsTourTitle}
                     </h3>
-                    <p className='text-gray-700 mb-4'>
+                    <p className='font-body text-gray-700 mb-4'>
                       {t.audioGuideTour.cityWallsTourDescription}
                     </p>
                     <div className='flex items-center gap-2 text-green-700 font-medium'>
@@ -127,7 +372,7 @@ function AudioGuideTourPage() {
                           clipRule='evenodd'
                         />
                       </svg>
-                      <span className='text-gray-800'>{highlight}</span>
+                      <span className='font-body text-gray-800'>{highlight}</span>
                     </div>
                   ))}
                 </div>
@@ -145,7 +390,7 @@ function AudioGuideTourPage() {
                       <h4 className='font-bold text-gray-900'>
                         {t.tourDetail.step1Title}
                       </h4>
-                      <p className='text-gray-600'>{t.tourDetail.step1Desc}</p>
+                      <p className='font-body text-gray-600'>{t.tourDetail.step1Desc}</p>
                     </div>
                   </div>
                   <div className='flex items-start gap-4'>
@@ -156,7 +401,7 @@ function AudioGuideTourPage() {
                       <h4 className='font-bold text-gray-900'>
                         {t.tourDetail.step2Title}
                       </h4>
-                      <p className='text-gray-600'>{t.tourDetail.step2Desc}</p>
+                      <p className='font-body text-gray-600'>{t.tourDetail.step2Desc}</p>
                     </div>
                   </div>
                   <div className='flex items-start gap-4'>
@@ -167,7 +412,7 @@ function AudioGuideTourPage() {
                       <h4 className='font-bold text-gray-900'>
                         {t.tourDetail.step3Title}
                       </h4>
-                      <p className='text-gray-600'>{t.tourDetail.step3Desc}</p>
+                      <p className='font-body text-gray-600'>{t.tourDetail.step3Desc}</p>
                     </div>
                   </div>
                 </div>
@@ -194,7 +439,7 @@ function AudioGuideTourPage() {
                     {t.audioGuideTour.included.map((item, index) => (
                       <li
                         key={index}
-                        className='text-gray-700 flex items-start space-x-2'
+                        className='font-body text-gray-700 flex items-start space-x-2'
                       >
                         <svg
                           className='w-4 h-4 text-green-600 mt-0.5 flex-shrink-0'
@@ -231,7 +476,7 @@ function AudioGuideTourPage() {
                     {t.audioGuideTour.notIncluded.map((item, index) => (
                       <li
                         key={index}
-                        className='text-gray-700 flex items-start space-x-2'
+                        className='font-body text-gray-700 flex items-start space-x-2'
                       >
                         <svg
                           className='w-4 h-4 text-red-600 mt-0.5 flex-shrink-0'
@@ -259,7 +504,7 @@ function AudioGuideTourPage() {
                   <span className='text-4xl font-bold text-red-600'>
                     {t.audioGuideTour.price}
                   </span>
-                  <p className='text-gray-600'>{t.tours.perPerson}</p>
+                  <p className='font-body text-gray-600'>{t.tours.perPerson}</p>
                   <div className='mt-4 inline-flex items-center px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full'>
                     <svg
                       className='w-4 h-4 mr-1'
@@ -287,7 +532,7 @@ function AudioGuideTourPage() {
                 ></div>
                 <noscript>Please enable javascript in your browser to book</noscript>
 
-                <div className='space-y-4 text-sm text-gray-600 mt-6'>
+                <div className='font-body space-y-4 text-sm text-gray-600 mt-6'>
                   <div className='flex items-start space-x-3'>
                     <svg
                       className='w-5 h-5 text-green-600 mt-0.5'
@@ -330,14 +575,14 @@ function AudioGuideTourPage() {
                 </div>
 
                 <div className='mt-6 pt-6 border-t text-center'>
-                  <p className='text-sm text-gray-600 mb-3'>
+                  <p className='font-body text-sm text-gray-600 mb-3'>
                     {t.tourDetail.needHelp}
                   </p>
                   <a
-                    href='tel:+385911359914'
+                    href='tel:+385992206031'
                     className='text-red-600 hover:text-red-700 font-medium'
                   >
-                    +385 91 135 9914
+                    +385 99 220 6031
                   </a>
                 </div>
               </div>
@@ -346,7 +591,10 @@ function AudioGuideTourPage() {
         </div>
       </section>
 
-      <TourFooter />
+      {/* Photo Gallery */}
+      <PhotoGallery images={dubrovnikImages} title={t.audioGuideTour.title} />
+
+      <Footer />
     </div>
   );
 }
@@ -358,31 +606,14 @@ function WineTourPage() {
     <div className='min-h-screen bg-white'>
       <Header variant='solid' />
 
-      {/* Hero Section */}
-      <section className='relative h-[70vh] overflow-hidden'>
-        <Image
-          src='https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'
-          alt={t.wineTour.title}
-          fill
-          className='object-cover'
-          priority
-          unoptimized
-        />
-        <div className='absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10'></div>
-        <div className='absolute inset-0 flex items-center justify-center'>
-          <div className='text-center text-white max-w-4xl mx-auto px-4'>
-            <div className='inline-block bg-red-600 text-white px-6 py-2 rounded-full text-sm font-bold mb-6 shadow-lg'>
-              {t.wineTour.badge}
-            </div>
-            <h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 leading-tight px-4'>
-              {t.wineTour.title}
-            </h1>
-            <p className='text-base sm:text-lg md:text-xl opacity-90 max-w-2xl mx-auto leading-relaxed px-4'>
-              {t.wineTour.shortDescription}
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* Hero Slideshow */}
+      <HeroSlideshow
+        images={peljesacImages}
+        title={t.wineTour.title}
+        badge={t.wineTour.badge}
+        badgeColor='bg-red-600'
+        shortDescription={t.wineTour.shortDescription}
+      />
 
       {/* Tour Info & Booking */}
       <section className='py-12 bg-gray-50'>
@@ -394,10 +625,10 @@ function WineTourPage() {
                 <h2 className='text-2xl lg:text-3xl font-bold text-gray-900 mb-6'>
                   {t.tourDetail.aboutTour}
                 </h2>
-                <p className='text-gray-700 text-lg leading-relaxed mb-6'>
+                <p className='font-body text-gray-700 text-lg leading-relaxed mb-6'>
                   {t.wineTour.fullDescription}
                 </p>
-                <p className='text-gray-700 leading-relaxed mb-8'>
+                <p className='font-body text-gray-700 leading-relaxed mb-8'>
                   {t.wineTour.stonDescription}
                 </p>
 
@@ -410,7 +641,7 @@ function WineTourPage() {
                     <h4 className='font-bold text-gray-900 mb-2'>
                       {t.wineTour.wineries.matuskoTitle}
                     </h4>
-                    <p className='text-gray-700'>
+                    <p className='font-body text-gray-700'>
                       {t.wineTour.wineries.matuskoDesc}
                     </p>
                   </div>
@@ -419,11 +650,11 @@ function WineTourPage() {
                       <h4 className='font-bold text-gray-900'>
                         {t.wineTour.wineries.curlinTitle}
                       </h4>
-                      <span className='text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full'>
+                      <span className='font-body text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full'>
                         {t.common.optional}
                       </span>
                     </div>
-                    <p className='text-gray-700'>
+                    <p className='font-body text-gray-700'>
                       {t.wineTour.wineries.curlinDesc}
                     </p>
                   </div>
@@ -432,11 +663,11 @@ function WineTourPage() {
                       <h4 className='font-bold text-gray-900'>
                         {t.wineTour.wineries.edivoTitle}
                       </h4>
-                      <span className='text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full'>
+                      <span className='font-body text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full'>
                         {t.common.optional}
                       </span>
                     </div>
-                    <p className='text-gray-700'>
+                    <p className='font-body text-gray-700'>
                       {t.wineTour.wineries.edivoDesc}
                     </p>
                   </div>
@@ -446,7 +677,7 @@ function WineTourPage() {
                 <div className='bg-blue-50 rounded-xl p-5 border border-blue-100 mb-8'>
                   <div className='flex items-center gap-3'>
                     <span className='text-2xl'>🏖️</span>
-                    <p className='text-gray-700'>{t.wineTour.beachStop}</p>
+                    <p className='font-body text-gray-700'>{t.wineTour.beachStop}</p>
                   </div>
                 </div>
 
@@ -471,7 +702,7 @@ function WineTourPage() {
                           clipRule='evenodd'
                         />
                       </svg>
-                      <span className='text-gray-800'>{highlight}</span>
+                      <span className='font-body text-gray-800'>{highlight}</span>
                     </div>
                   ))}
                 </div>
@@ -483,13 +714,13 @@ function WineTourPage() {
                 <div className='space-y-3 mb-8'>
                   <div className='flex items-center gap-3 p-4 bg-amber-50 rounded-lg border border-amber-200'>
                     <span className='text-xl'>🍷</span>
-                    <span className='text-gray-800'>
+                    <span className='font-body text-gray-800'>
                       {t.wineTour.additionalOptions.winery}
                     </span>
                   </div>
                   <div className='flex items-center gap-3 p-4 bg-amber-50 rounded-lg border border-amber-200'>
                     <span className='text-xl'>🦪</span>
-                    <span className='text-gray-800'>
+                    <span className='font-body text-gray-800'>
                       {t.wineTour.additionalOptions.lunch}
                     </span>
                   </div>
@@ -517,7 +748,7 @@ function WineTourPage() {
                     {t.wineTour.included.map((item, index) => (
                       <li
                         key={index}
-                        className='text-gray-700 flex items-start space-x-2'
+                        className='font-body text-gray-700 flex items-start space-x-2'
                       >
                         <svg
                           className='w-4 h-4 text-green-600 mt-0.5 flex-shrink-0'
@@ -554,7 +785,7 @@ function WineTourPage() {
                     {t.wineTour.notIncluded.map((item, index) => (
                       <li
                         key={index}
-                        className='text-gray-700 flex items-start space-x-2'
+                        className='font-body text-gray-700 flex items-start space-x-2'
                       >
                         <svg
                           className='w-4 h-4 text-red-600 mt-0.5 flex-shrink-0'
@@ -579,13 +810,13 @@ function WineTourPage() {
             <div className='lg:col-span-1 order-first lg:order-last'>
               <div className='bg-white rounded-2xl shadow-lg p-6 sticky top-6'>
                 <div className='text-center mb-6'>
-                  <div className='text-sm text-gray-500 mb-1'>
+                  <div className='font-body text-sm text-gray-500 mb-1'>
                     {t.common.from}
                   </div>
                   <span className='text-4xl font-bold text-red-600'>
                     {t.wineTour.price}
                   </span>
-                  <p className='text-gray-600'>{t.tours.perPerson}</p>
+                  <p className='font-body text-gray-600'>{t.tours.perPerson}</p>
                   <div className='mt-4 inline-flex items-center px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full'>
                     <svg
                       className='w-4 h-4 mr-1'
@@ -613,7 +844,7 @@ function WineTourPage() {
                 ></div>
                 <noscript>Please enable javascript in your browser to book</noscript>
 
-                <div className='space-y-4 text-sm text-gray-600 mt-6'>
+                <div className='font-body space-y-4 text-sm text-gray-600 mt-6'>
                   <div className='flex items-start space-x-3'>
                     <svg
                       className='w-5 h-5 text-green-600 mt-0.5'
@@ -673,7 +904,7 @@ function WineTourPage() {
                 </div>
 
                 {/* Vehicle Options */}
-                <div className='mt-6 pt-6 border-t'>
+                <div className='font-body mt-6 pt-6 border-t'>
                   <h4 className='font-medium text-gray-900 mb-3'>
                     Vehicle Options:
                   </h4>
@@ -685,14 +916,14 @@ function WineTourPage() {
                 </div>
 
                 <div className='mt-6 pt-6 border-t text-center'>
-                  <p className='text-sm text-gray-600 mb-3'>
+                  <p className='font-body text-sm text-gray-600 mb-3'>
                     {t.tourDetail.needHelp}
                   </p>
                   <a
-                    href='tel:+385911359914'
+                    href='tel:+385992206031'
                     className='text-red-600 hover:text-red-700 font-medium'
                   >
-                    +385 91 135 9914
+                    +385 99 220 6031
                   </a>
                 </div>
               </div>
@@ -701,41 +932,11 @@ function WineTourPage() {
         </div>
       </section>
 
-      <TourFooter />
+      {/* Photo Gallery */}
+      <PhotoGallery images={peljesacImages} title={t.wineTour.title} />
+
+      <Footer />
     </div>
-  );
-}
-
-function TourFooter() {
-  const { t } = useLanguage();
-
-  return (
-    <footer className='bg-gray-900 text-white py-12'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='flex flex-col md:flex-row justify-between items-center gap-6'>
-          <div className='flex items-center gap-3'>
-            <div className='bg-white rounded-xl p-4'>
-              <Image src='/img/logo.svg' alt='Dubrovnik Tours' width={200} height={70} className='h-[70px] w-auto' />
-            </div>
-          </div>
-          <div className='flex gap-6'>
-            <Link
-              href='/tours/audio-guide'
-              className='text-gray-300 hover:text-white transition-colors'
-            >
-              {t.footer.audioGuideTour}
-            </Link>
-            <Link
-              href='/tours/wine-tour'
-              className='text-gray-300 hover:text-white transition-colors'
-            >
-              {t.footer.wineTour}
-            </Link>
-          </div>
-          <div className='text-gray-400 text-sm'>{t.footer.copyright}</div>
-        </div>
-      </div>
-    </footer>
   );
 }
 
