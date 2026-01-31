@@ -116,6 +116,18 @@ export default function Footer() {
               </h4>
               <div className='font-body space-y-3'>
                 <Link
+                  href='/tours/hop-on-hop-off'
+                  className='block text-gray-300 hover:text-white transition-colors'
+                >
+                  {t.footer.hopOnHopOffTour}
+                </Link>
+                <Link
+                  href='/tours/city-tour'
+                  className='block text-gray-300 hover:text-white transition-colors'
+                >
+                  {t.footer.cityTour}
+                </Link>
+                <Link
                   href='/tours/audio-guide'
                   className='block text-gray-300 hover:text-white transition-colors'
                 >

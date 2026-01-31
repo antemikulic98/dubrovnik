@@ -18,6 +18,12 @@ const dubrovnikImages = Array.from({ length: 32 }, (_, i) => `/img/dubrovnik/dub
 // Pelješac images for Wine Tour
 const peljesacImages = Array.from({ length: 171 }, (_, i) => `/img/peljesac/peljesac${i + 1}.jpg`);
 
+// City Tour images (reusing dubrovnik images)
+const cityTourImages = dubrovnikImages;
+
+// Hop-On Hop-Off Tour images (reusing dubrovnik images)
+const hopOnHopOffImages = dubrovnikImages;
+
 // Hero Slideshow Component
 function HeroSlideshow({ images, title, badge, badgeColor, shortDescription }: {
   images: string[];
@@ -940,9 +946,679 @@ function WineTourPage() {
   );
 }
 
+function HopOnHopOffTourPage() {
+  const { t } = useLanguage();
+
+  return (
+    <div className='min-h-screen bg-white'>
+      <Header variant='solid' />
+
+      {/* Hero Slideshow */}
+      <HeroSlideshow
+        images={hopOnHopOffImages}
+        title={t.hopOnHopOffTour.title}
+        badge={t.hopOnHopOffTour.badge}
+        badgeColor='bg-blue-600'
+        shortDescription={t.hopOnHopOffTour.shortDescription}
+      />
+
+      {/* Tour Info & Booking */}
+      <section className='py-12 bg-gray-50'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+          <div className='grid lg:grid-cols-3 gap-6 lg:gap-12'>
+            {/* Tour Details */}
+            <div className='lg:col-span-2 space-y-6 lg:space-y-8'>
+              <div className='bg-white rounded-2xl shadow-lg p-6 lg:p-8'>
+                <h2 className='text-2xl lg:text-3xl font-bold text-gray-900 mb-6'>
+                  {t.tourDetail.aboutTour}
+                </h2>
+                <p className='font-body text-gray-700 text-lg leading-relaxed mb-8'>
+                  {t.hopOnHopOffTour.fullDescription}
+                </p>
+
+                {/* How It Works */}
+                <h3 className='text-xl font-bold text-gray-900 mb-4'>
+                  {t.tourDetail.howItWorks}
+                </h3>
+                <div className='bg-blue-50 rounded-xl p-6 mb-8 border border-blue-100'>
+                  <p className='font-body text-gray-700'>
+                    {t.hopOnHopOffTour.howItWorks}
+                  </p>
+                </div>
+
+                {/* Highlights */}
+                <h3 className='text-xl font-bold text-gray-900 mb-4'>
+                  {t.tourDetail.highlights}
+                </h3>
+                <div className='grid sm:grid-cols-2 gap-3 mb-8'>
+                  {t.hopOnHopOffTour.highlights.map((highlight, index) => (
+                    <div
+                      key={index}
+                      className='flex items-start space-x-3 p-3 bg-blue-50 rounded-lg'
+                    >
+                      <svg
+                        className='w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0'
+                        fill='currentColor'
+                        viewBox='0 0 20 20'
+                      >
+                        <path
+                          fillRule='evenodd'
+                          d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                          clipRule='evenodd'
+                        />
+                      </svg>
+                      <span className='font-body text-gray-800'>{highlight}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Route & Stops */}
+                <h3 className='text-xl font-bold text-gray-900 mb-4'>
+                  Route & Stops
+                </h3>
+                <div className='space-y-4 mb-8'>
+                  <div className='flex items-start gap-4'>
+                    <div className='w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0'>
+                      1
+                    </div>
+                    <div className='bg-red-50 rounded-xl p-4 flex-grow border border-red-100'>
+                      <h4 className='font-bold text-gray-900'>{t.hopOnHopOffTour.stops.pile}</h4>
+                    </div>
+                  </div>
+                  <div className='flex items-start gap-4'>
+                    <div className='w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0'>
+                      2
+                    </div>
+                    <div className='bg-orange-50 rounded-xl p-4 flex-grow border border-orange-100'>
+                      <h4 className='font-bold text-gray-900'>{t.hopOnHopOffTour.stops.postaLapad}</h4>
+                    </div>
+                  </div>
+                  <div className='flex items-start gap-4'>
+                    <div className='w-10 h-10 bg-yellow-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0'>
+                      3
+                    </div>
+                    <div className='bg-yellow-50 rounded-xl p-4 flex-grow border border-yellow-100'>
+                      <h4 className='font-bold text-gray-900'>{t.hopOnHopOffTour.stops.hotelPresident}</h4>
+                    </div>
+                  </div>
+                  <div className='flex items-start gap-4'>
+                    <div className='w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0'>
+                      4
+                    </div>
+                    <div className='bg-green-50 rounded-xl p-4 flex-grow border border-green-100'>
+                      <h4 className='font-bold text-gray-900'>{t.hopOnHopOffTour.stops.hotelKompas}</h4>
+                    </div>
+                  </div>
+                  <div className='flex items-start gap-4'>
+                    <div className='w-10 h-10 bg-teal-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0'>
+                      5
+                    </div>
+                    <div className='bg-teal-50 rounded-xl p-4 flex-grow border border-teal-100'>
+                      <h4 className='font-bold text-gray-900'>{t.hopOnHopOffTour.stops.gruz}</h4>
+                    </div>
+                  </div>
+                  <div className='flex items-start gap-4'>
+                    <div className='w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0'>
+                      6
+                    </div>
+                    <div className='bg-blue-50 rounded-xl p-4 flex-grow border border-blue-100'>
+                      <h4 className='font-bold text-gray-900'>{t.hopOnHopOffTour.stops.bridge}</h4>
+                    </div>
+                  </div>
+                  <div className='flex items-start gap-4'>
+                    <div className='w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0'>
+                      7
+                    </div>
+                    <div className='bg-purple-50 rounded-xl p-4 flex-grow border border-purple-100'>
+                      <h4 className='font-bold text-gray-900'>{t.hopOnHopOffTour.stops.viewpoint}</h4>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Departure Times */}
+                <h3 className='text-xl font-bold text-gray-900 mb-4'>
+                  Departure Times
+                </h3>
+                <div className='grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 mb-8'>
+                  {t.hopOnHopOffTour.departures.map((time, index) => (
+                    <div
+                      key={index}
+                      className='bg-gray-100 text-gray-800 rounded-lg p-3 text-center font-medium'
+                    >
+                      {time}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Included / Not Included */}
+              <div className='grid md:grid-cols-2 gap-6'>
+                <div className='bg-white rounded-2xl shadow-lg p-6'>
+                  <h3 className='text-lg font-bold text-gray-900 mb-4 flex items-center'>
+                    <svg
+                      className='w-5 h-5 text-green-600 mr-2'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                    {t.tourDetail.included}
+                  </h3>
+                  <ul className='space-y-2'>
+                    {t.hopOnHopOffTour.included.map((item, index) => (
+                      <li
+                        key={index}
+                        className='font-body text-gray-700 flex items-start space-x-2'
+                      >
+                        <svg
+                          className='w-4 h-4 text-green-600 mt-0.5 flex-shrink-0'
+                          fill='currentColor'
+                          viewBox='0 0 20 20'
+                        >
+                          <path
+                            fillRule='evenodd'
+                            d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                            clipRule='evenodd'
+                          />
+                        </svg>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className='bg-white rounded-2xl shadow-lg p-6'>
+                  <h3 className='text-lg font-bold text-gray-900 mb-4 flex items-center'>
+                    <svg
+                      className='w-5 h-5 text-red-600 mr-2'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                    {t.tourDetail.notIncluded}
+                  </h3>
+                  <ul className='space-y-2'>
+                    {t.hopOnHopOffTour.notIncluded.map((item, index) => (
+                      <li
+                        key={index}
+                        className='font-body text-gray-700 flex items-start space-x-2'
+                      >
+                        <svg
+                          className='w-4 h-4 text-red-600 mt-0.5 flex-shrink-0'
+                          fill='currentColor'
+                          viewBox='0 0 20 20'
+                        >
+                          <path
+                            fillRule='evenodd'
+                            d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+                            clipRule='evenodd'
+                          />
+                        </svg>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Booking Sidebar */}
+            <div className='lg:col-span-1 order-first lg:order-last'>
+              <div className='bg-white rounded-2xl shadow-lg p-6 sticky top-6'>
+                <div className='text-center mb-6'>
+                  <div className='font-body text-sm text-gray-500 mb-1'>
+                    {t.common.from}
+                  </div>
+                  <span className='text-4xl font-bold text-red-600'>
+                    {t.hopOnHopOffTour.price}
+                  </span>
+                  <p className='font-body text-gray-600'>{t.tours.perPerson}</p>
+                  <div className='mt-4 inline-flex items-center px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full'>
+                    <svg
+                      className='w-4 h-4 mr-1'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                    {t.tourDetail.bestPrice}
+                  </div>
+                </div>
+
+                {/* Bokun Booking Widget */}
+                <Script
+                  src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=5133d488-02e7-4b3f-8aab-f7f57d5dc30b"
+                  strategy="lazyOnload"
+                />
+                <div
+                  className="bokunWidget"
+                  data-src="https://widgets.bokun.io/online-sales/5133d488-02e7-4b3f-8aab-f7f57d5dc30b/experience-calendar/1144868"
+                ></div>
+                <noscript>Please enable javascript in your browser to book</noscript>
+
+                <div className='font-body space-y-4 text-sm text-gray-600 mt-6'>
+                  <div className='flex items-start space-x-3'>
+                    <svg
+                      className='w-5 h-5 text-green-600 mt-0.5'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                    <div>
+                      <span className='font-medium text-gray-900'>
+                        {t.tourDetail.freeCancellation}
+                      </span>
+                      <p className='text-gray-600'>24h before tour</p>
+                    </div>
+                  </div>
+                  <div className='flex items-start space-x-3'>
+                    <svg
+                      className='w-5 h-5 text-purple-600 mt-0.5'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                    <div>
+                      <span className='font-medium text-gray-900'>
+                        {t.tours.duration}
+                      </span>
+                      <p className='text-gray-600'>{t.hopOnHopOffTour.duration}</p>
+                    </div>
+                  </div>
+                  <div className='flex items-start space-x-3'>
+                    <svg
+                      className='w-5 h-5 text-blue-600 mt-0.5'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path d='M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z' />
+                      <path d='M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z' />
+                    </svg>
+                    <div>
+                      <span className='font-medium text-gray-900'>
+                        Service Type
+                      </span>
+                      <p className='text-gray-600'>{t.hopOnHopOffTour.serviceType}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className='mt-6 pt-6 border-t text-center'>
+                  <p className='font-body text-sm text-gray-600 mb-3'>
+                    {t.tourDetail.needHelp}
+                  </p>
+                  <a
+                    href='tel:+385992206031'
+                    className='text-red-600 hover:text-red-700 font-medium'
+                  >
+                    +385 99 220 6031
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Photo Gallery */}
+      <PhotoGallery images={hopOnHopOffImages} title={t.hopOnHopOffTour.title} />
+
+      <Footer />
+    </div>
+  );
+}
+
+function CityTourPage() {
+  const { t } = useLanguage();
+
+  return (
+    <div className='min-h-screen bg-white'>
+      <Header variant='solid' />
+
+      {/* Hero Slideshow */}
+      <HeroSlideshow
+        images={cityTourImages}
+        title={t.cityTour.title}
+        badge={t.cityTour.badge}
+        badgeColor='bg-green-600'
+        shortDescription={t.cityTour.shortDescription}
+      />
+
+      {/* Tour Info & Booking */}
+      <section className='py-12 bg-gray-50'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+          <div className='grid lg:grid-cols-3 gap-6 lg:gap-12'>
+            {/* Tour Details */}
+            <div className='lg:col-span-2 space-y-6 lg:space-y-8'>
+              <div className='bg-white rounded-2xl shadow-lg p-6 lg:p-8'>
+                <h2 className='text-2xl lg:text-3xl font-bold text-gray-900 mb-6'>
+                  {t.tourDetail.aboutTour}
+                </h2>
+                <p className='font-body text-gray-700 text-lg leading-relaxed mb-8'>
+                  {t.cityTour.fullDescription}
+                </p>
+
+                {/* Highlights */}
+                <h3 className='text-xl font-bold text-gray-900 mb-4'>
+                  {t.tourDetail.highlights}
+                </h3>
+                <div className='grid sm:grid-cols-2 gap-3 mb-8'>
+                  {t.cityTour.highlights.map((highlight, index) => (
+                    <div
+                      key={index}
+                      className='flex items-start space-x-3 p-3 bg-green-50 rounded-lg'
+                    >
+                      <svg
+                        className='w-5 h-5 text-green-600 mt-0.5 flex-shrink-0'
+                        fill='currentColor'
+                        viewBox='0 0 20 20'
+                      >
+                        <path
+                          fillRule='evenodd'
+                          d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                          clipRule='evenodd'
+                        />
+                      </svg>
+                      <span className='font-body text-gray-800'>{highlight}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Itinerary */}
+                <h3 className='text-xl font-bold text-gray-900 mb-4'>
+                  {t.tourDetail.itinerary}
+                </h3>
+                <div className='space-y-4 mb-8'>
+                  <div className='flex items-start gap-4'>
+                    <div className='w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0'>
+                      1
+                    </div>
+                    <div className='bg-green-50 rounded-xl p-4 flex-grow border border-green-100'>
+                      <h4 className='font-bold text-gray-900'>Bridge Stop</h4>
+                      <p className='font-body text-gray-700 text-sm'>10-minute photo stop at a scenic bridge viewpoint</p>
+                    </div>
+                  </div>
+                  <div className='flex items-start gap-4'>
+                    <div className='w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0'>
+                      2
+                    </div>
+                    <div className='bg-blue-50 rounded-xl p-4 flex-grow border border-blue-100'>
+                      <h4 className='font-bold text-gray-900'>Ombla River Spring</h4>
+                      <p className='font-body text-gray-700 text-sm'>15-minute visit to the beautiful river spring</p>
+                    </div>
+                  </div>
+                  <div className='flex items-start gap-4'>
+                    <div className='w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0'>
+                      3
+                    </div>
+                    <div className='bg-purple-50 rounded-xl p-4 flex-grow border border-purple-100'>
+                      <h4 className='font-bold text-gray-900'>Mount Srd Viewpoint</h4>
+                      <p className='font-body text-gray-700 text-sm'>15-20 minutes of free time at the top with panoramic views</p>
+                    </div>
+                  </div>
+                  <div className='flex items-start gap-4'>
+                    <div className='w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0'>
+                      4
+                    </div>
+                    <div className='bg-red-50 rounded-xl p-4 flex-grow border border-red-100'>
+                      <h4 className='font-bold text-gray-900'>Pile Gate Drop-off</h4>
+                      <p className='font-body text-gray-700 text-sm'>Tour ends at Pile Gate (Old Town entrance)</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Departure Times */}
+                <h3 className='text-xl font-bold text-gray-900 mb-4'>
+                  Departure Times
+                </h3>
+                <div className='grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 mb-8'>
+                  {t.cityTour.departures.map((time, index) => (
+                    <div
+                      key={index}
+                      className={`rounded-lg p-3 text-center font-medium ${
+                        time.toLowerCase().includes('sunset')
+                          ? 'bg-orange-100 text-orange-800 border border-orange-200'
+                          : 'bg-gray-100 text-gray-800'
+                      }`}
+                    >
+                      {time}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Included / Not Included */}
+              <div className='grid md:grid-cols-2 gap-6'>
+                <div className='bg-white rounded-2xl shadow-lg p-6'>
+                  <h3 className='text-lg font-bold text-gray-900 mb-4 flex items-center'>
+                    <svg
+                      className='w-5 h-5 text-green-600 mr-2'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                    {t.tourDetail.included}
+                  </h3>
+                  <ul className='space-y-2'>
+                    {t.cityTour.included.map((item, index) => (
+                      <li
+                        key={index}
+                        className='font-body text-gray-700 flex items-start space-x-2'
+                      >
+                        <svg
+                          className='w-4 h-4 text-green-600 mt-0.5 flex-shrink-0'
+                          fill='currentColor'
+                          viewBox='0 0 20 20'
+                        >
+                          <path
+                            fillRule='evenodd'
+                            d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                            clipRule='evenodd'
+                          />
+                        </svg>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className='bg-white rounded-2xl shadow-lg p-6'>
+                  <h3 className='text-lg font-bold text-gray-900 mb-4 flex items-center'>
+                    <svg
+                      className='w-5 h-5 text-red-600 mr-2'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                    {t.tourDetail.notIncluded}
+                  </h3>
+                  <ul className='space-y-2'>
+                    {t.cityTour.notIncluded.map((item, index) => (
+                      <li
+                        key={index}
+                        className='font-body text-gray-700 flex items-start space-x-2'
+                      >
+                        <svg
+                          className='w-4 h-4 text-red-600 mt-0.5 flex-shrink-0'
+                          fill='currentColor'
+                          viewBox='0 0 20 20'
+                        >
+                          <path
+                            fillRule='evenodd'
+                            d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+                            clipRule='evenodd'
+                          />
+                        </svg>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Booking Sidebar */}
+            <div className='lg:col-span-1 order-first lg:order-last'>
+              <div className='bg-white rounded-2xl shadow-lg p-6 sticky top-6'>
+                <div className='text-center mb-6'>
+                  <div className='font-body text-sm text-gray-500 mb-1'>
+                    {t.common.from}
+                  </div>
+                  <span className='text-4xl font-bold text-red-600'>
+                    {t.cityTour.price}
+                  </span>
+                  <p className='font-body text-gray-600'>{t.tours.perPerson}</p>
+                  <div className='mt-4 inline-flex items-center px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full'>
+                    <svg
+                      className='w-4 h-4 mr-1'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                    {t.tourDetail.bestPrice}
+                  </div>
+                </div>
+
+                {/* Bokun Booking Widget */}
+                <Script
+                  src="https://widgets.bokun.io/assets/javascripts/apps/build/BokunWidgetsLoader.js?bookingChannelUUID=5133d488-02e7-4b3f-8aab-f7f57d5dc30b"
+                  strategy="lazyOnload"
+                />
+                <div
+                  className="bokunWidget"
+                  data-src="https://widgets.bokun.io/online-sales/5133d488-02e7-4b3f-8aab-f7f57d5dc30b/experience-calendar/1144868"
+                ></div>
+                <noscript>Please enable javascript in your browser to book</noscript>
+
+                <div className='font-body space-y-4 text-sm text-gray-600 mt-6'>
+                  <div className='flex items-start space-x-3'>
+                    <svg
+                      className='w-5 h-5 text-green-600 mt-0.5'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                    <div>
+                      <span className='font-medium text-gray-900'>
+                        {t.tourDetail.freeCancellation}
+                      </span>
+                      <p className='text-gray-600'>24h before tour</p>
+                    </div>
+                  </div>
+                  <div className='flex items-start space-x-3'>
+                    <svg
+                      className='w-5 h-5 text-purple-600 mt-0.5'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                    <div>
+                      <span className='font-medium text-gray-900'>
+                        {t.tours.duration}
+                      </span>
+                      <p className='text-gray-600'>{t.cityTour.duration}</p>
+                    </div>
+                  </div>
+                  <div className='flex items-start space-x-3'>
+                    <svg
+                      className='w-5 h-5 text-blue-600 mt-0.5'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path d='M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z' />
+                      <path d='M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z' />
+                    </svg>
+                    <div>
+                      <span className='font-medium text-gray-900'>
+                        Vehicle
+                      </span>
+                      <p className='text-gray-600'>{t.cityTour.vehicle}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className='mt-6 pt-6 border-t text-center'>
+                  <p className='font-body text-sm text-gray-600 mb-3'>
+                    {t.tourDetail.needHelp}
+                  </p>
+                  <a
+                    href='tel:+385992206031'
+                    className='text-red-600 hover:text-red-700 font-medium'
+                  >
+                    +385 99 220 6031
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Photo Gallery */}
+      <PhotoGallery images={cityTourImages} title={t.cityTour.title} />
+
+      <Footer />
+    </div>
+  );
+}
+
 export default function TourPage({ params }: TourPageProps) {
   const { id } = use(params);
   const { t } = useLanguage();
+
+  if (id === 'hop-on-hop-off') {
+    return <HopOnHopOffTourPage />;
+  }
+
+  if (id === 'city-tour') {
+    return <CityTourPage />;
+  }
 
   if (id === 'audio-guide') {
     return <AudioGuideTourPage />;

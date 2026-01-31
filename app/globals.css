@@ -77,3 +77,27 @@ video::-moz-media-controls {
 video::media-controls {
   display: none !important;
 }
+
+/* Tours Swiper Container */
+.tours-swiper-container {
+  padding: 0 2rem;
+}
+
+@media (min-width: 1024px) {
+  .tours-swiper-container {
+    padding: 0 3rem;
+  }
+}
+
+/* Make all Swiper slides same height */
+.tours-swiper-container .swiper {
+  height: auto;
+}
+
+.tours-swiper-container .swiper-wrapper {
+  align-items: stretch;
+}
+
+.tours-swiper-container .swiper-slide {
+  height: auto;
+}

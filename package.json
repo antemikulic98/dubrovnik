@@ -12,9 +12,11 @@
     "next": "15.4.5",
     "nodemailer": "^7.0.11",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "swiper": "^12.1.0"
   },
   "devDependencies": {
+    "@anthropic-ai/claude-code": "^2.1.22",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",

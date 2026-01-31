@@ -135,6 +135,47 @@ export interface Translation {
     };
   };
 
+  // City Tour
+  cityTour: {
+    title: string;
+    badge: string;
+    price: string;
+    duration: string;
+    shortDescription: string;
+    fullDescription: string;
+    highlights: string[];
+    included: string[];
+    notIncluded: string[];
+    serviceType: string;
+    vehicle: string;
+    departures: string[];
+  };
+
+  // Hop-On Hop-Off Tour
+  hopOnHopOffTour: {
+    title: string;
+    badge: string;
+    price: string;
+    duration: string;
+    shortDescription: string;
+    fullDescription: string;
+    highlights: string[];
+    included: string[];
+    notIncluded: string[];
+    serviceType: string;
+    howItWorks: string;
+    stops: {
+      pile: string;
+      postaLapad: string;
+      hotelPresident: string;
+      hotelKompas: string;
+      gruz: string;
+      bridge: string;
+      viewpoint: string;
+    };
+    departures: string[];
+  };
+
   // About Section
   about: {
     title: string;
@@ -180,6 +221,8 @@ export interface Translation {
   footer: {
     followUs: string;
     popularTours: string;
+    hopOnHopOffTour: string;
+    cityTour: string;
     audioGuideTour: string;
     wineTour: string;
     customTour: string;
@@ -436,6 +479,99 @@ export const translations: Record<LanguageCode, Translation> = {
           "Thank you! We'll get back to you within 24 hours with a personalized tour proposal.",
       },
     },
+    cityTour: {
+      title: 'City Tour with Cabrio Mini Van',
+      badge: 'NEW',
+      price: '40€',
+      duration: '90-120 min',
+      shortDescription:
+        'Enjoy a panoramic tour of Dubrovnik and discover the best photo spots while riding in a comfortable cabrio mini van with a local guide.',
+      fullDescription:
+        'Beyond exploring the Old Town, some of the most breathtaking views of Dubrovnik are found from above. This tour takes you to stunning viewpoints, perfect for capturing unforgettable photos. Your driver-guide will share stories about the city, including stops at several Game of Thrones filming locations.',
+      highlights: [
+        'Panoramic views from above the city',
+        'Best photo spots in Dubrovnik',
+        'Visit to Ombla river spring',
+        'Mount Srđ viewpoint with free time',
+        'Game of Thrones filming locations',
+        'Sunset tour available',
+      ],
+      included: [
+        'Panoramic route ride 90-120 minutes',
+        'English-speaking driver/guide',
+        'Free time in Old Town',
+        'Return transfer to ship (if arranged)',
+      ],
+      notIncluded: [
+        'City walls and museum entrance tickets',
+      ],
+      serviceType: 'Regular / Group tour',
+      vehicle: 'Modern tourist cabrio van with free WiFi, capacity up to 8 passengers',
+      departures: [
+        '08:00-08:20',
+        '09:00-09:20',
+        '10:00-10:20',
+        '11:00-11:20',
+        '12:00-12:20',
+        '13:00-13:20',
+        '14:00-14:20',
+        '15:00-15:20',
+        'Sunset tour',
+      ],
+    },
+    hopOnHopOffTour: {
+      title: 'Hop-On Hop-Off City Bus Tour',
+      badge: 'FLEXIBLE',
+      price: '20€',
+      duration: '60-90 min',
+      shortDescription:
+        'Flexible sightseeing in Dubrovnik by bus. Get on and off at marked stops throughout the day with one ticket.',
+      fullDescription:
+        'The hop-on hop-off bus tour is designed for guests who want freedom of movement and their own pace of exploring Dubrovnik. With one ticket you can get on and off the bus at marked stops throughout the day, combining panoramic rides, seaside walks, swimming and photography. The tour connects the most attractive parts of the city – Old Town, Lapad, Babin Kuk, Gruž, Franjo Tuđman Bridge and a panoramic viewpoint.',
+      highlights: [
+        'Unlimited hop-on hop-off access all day',
+        'Panoramic views of Dubrovnik',
+        'Visit Lapad beach and promenade',
+        'Explore Babin Kuk peninsula',
+        'Photo stop at Franjo Tuđman Bridge',
+        'Best viewpoint of Old Town and Elaphiti Islands',
+      ],
+      included: [
+        'Hop-on hop-off ticket (valid all day)',
+        'Panoramic bus tour of Dubrovnik',
+        'Air-conditioned tourist bus',
+        'Marked stops and regular departures',
+      ],
+      notIncluded: [
+        'Museum and city walls entrance tickets',
+        'Food and drinks',
+        'Other services not listed',
+      ],
+      serviceType: 'Private / Regular hop-on hop-off bus tour',
+      howItWorks: 'Entry and exit is only possible at marked stops. At each stop you can: exit and explore the area, continue walking, swimming or photography, board the next bus with a valid ticket.',
+      stops: {
+        pile: 'PILE – Old Town Dubrovnik (Starting point)',
+        postaLapad: 'Pošta Lapad – Seaside walk, cafés, coastal promenade',
+        hotelPresident: 'Hotel President – Babin Kuk peninsula, beach, swimming',
+        hotelKompas: 'Hotel Kompas – Lapad beach, promenade, restaurants',
+        gruz: 'Gruž – Main bus station, cruise port, Gruž harbor walk',
+        bridge: 'Franjo Tuđman Bridge – Ombla river view, panoramic photos',
+        viewpoint: 'Panoramic Viewpoint – Best view of Old Town, Adriatic Sea and Elaphiti Islands',
+      },
+      departures: [
+        '08:00-08:20',
+        '09:00-09:20',
+        '10:00-10:20',
+        '11:00-11:20',
+        '12:00-12:20',
+        '13:00-13:20',
+        '14:00-14:20',
+        '15:00-15:20',
+        '16:00-16:20',
+        '17:00-17:20',
+        '18:00-18:20',
+      ],
+    },
     about: {
       title: 'About',
       titleHighlight: 'Our Story',
@@ -483,6 +619,8 @@ export const translations: Record<LanguageCode, Translation> = {
     footer: {
       followUs: 'Follow Us',
       popularTours: 'Our Tours',
+      hopOnHopOffTour: 'Hop-On Hop-Off Bus Tour',
+      cityTour: 'City Tour',
       audioGuideTour: 'Audio Guide Tour',
       wineTour: 'Pelješac Wine Tour',
       customTour: 'Custom Made Tour',
@@ -764,6 +902,99 @@ export const translations: Record<LanguageCode, Translation> = {
           '¡Gracias! Te responderemos en 24 horas con una propuesta de tour personalizada.',
       },
     },
+    cityTour: {
+      title: 'City Tour en Mini Van Cabrio',
+      badge: 'NUEVO',
+      price: '40€',
+      duration: '90-120 min',
+      shortDescription:
+        'Un recorrido panorámico por Dubrovnik con las mejores vistas para hacer fotos, realizado en un cómodo mini van cabrio con guía.',
+      fullDescription:
+        'Descubrir Dubrovnik desde lo alto es uno de los modos más impresionantes de conocer la ciudad. Además del casco antiguo, las vistas más espectaculares se encuentran en los puntos elevados. Este tour combina panoramas inolvidables y paradas fotográficas, mientras su conductor-guía local comparte datos interesantes. También visitará algunas localizaciones de Juego de Tronos.',
+      highlights: [
+        'Vistas panorámicas desde lo alto de la ciudad',
+        'Mejores puntos fotográficos de Dubrovnik',
+        'Visita al manantial del río Ombla',
+        'Mirador del Monte Srđ con tiempo libre',
+        'Localizaciones de Juego de Tronos',
+        'Tour al atardecer disponible',
+      ],
+      included: [
+        'Recorrido panorámico 90-120 minutos',
+        'Conductor/guía de habla inglesa',
+        'Tiempo libre en el casco antiguo',
+        'Transfer de regreso al barco (si se acuerda)',
+      ],
+      notIncluded: [
+        'Entradas a murallas y museos',
+      ],
+      serviceType: 'Tour regular / grupal',
+      vehicle: 'Mini van cabrio turístico moderno con WiFi gratis, capacidad hasta 8 pasajeros',
+      departures: [
+        '08:00-08:20',
+        '09:00-09:20',
+        '10:00-10:20',
+        '11:00-11:20',
+        '12:00-12:20',
+        '13:00-13:20',
+        '14:00-14:20',
+        '15:00-15:20',
+        'Tour al atardecer',
+      ],
+    },
+    hopOnHopOffTour: {
+      title: 'Hop-On Hop-Off Tour en Bus',
+      badge: 'FLEXIBLE',
+      price: '20€',
+      duration: '60-90 min',
+      shortDescription:
+        'Recorrido flexible por Dubrovnik en autobús. Sube y baja en las paradas marcadas durante todo el día con un solo billete.',
+      fullDescription:
+        'El tour hop-on hop-off está diseñado para huéspedes que desean libertad de movimiento y su propio ritmo para explorar Dubrovnik. Con un billete puede subir y bajar del autobús en las paradas marcadas durante todo el día, combinando paseos panorámicos, caminatas junto al mar, baño y fotografía. El tour conecta las partes más atractivas de la ciudad.',
+      highlights: [
+        'Acceso ilimitado hop-on hop-off todo el día',
+        'Vistas panorámicas de Dubrovnik',
+        'Visita la playa y paseo de Lapad',
+        'Explora la península de Babin Kuk',
+        'Parada fotográfica en el Puente Franjo Tuđman',
+        'El mejor mirador del casco antiguo e islas Elafiti',
+      ],
+      included: [
+        'Billete hop-on hop-off (válido todo el día)',
+        'Tour panorámico en autobús por Dubrovnik',
+        'Autobús turístico climatizado',
+        'Paradas marcadas y salidas regulares',
+      ],
+      notIncluded: [
+        'Entradas a museos y murallas',
+        'Comida y bebidas',
+        'Otros servicios no listados',
+      ],
+      serviceType: 'Tour hop-on hop-off privado / regular',
+      howItWorks: 'La entrada y salida solo es posible en las paradas marcadas. En cada parada puede: salir y explorar la zona, continuar caminando, nadando o fotografiando, subir al siguiente autobús con billete válido.',
+      stops: {
+        pile: 'PILE – Casco Antiguo de Dubrovnik (Punto de partida)',
+        postaLapad: 'Pošta Lapad – Paseo marítimo, cafeterías, paseo costero',
+        hotelPresident: 'Hotel President – Península Babin Kuk, playa, baño',
+        hotelKompas: 'Hotel Kompas – Playa de Lapad, paseo, restaurantes',
+        gruz: 'Gruž – Estación de autobuses, puerto de cruceros, paseo por el puerto',
+        bridge: 'Puente Franjo Tuđman – Vista del río Ombla, fotos panorámicas',
+        viewpoint: 'Mirador Panorámico – Mejor vista del casco antiguo, Mar Adriático e Islas Elafiti',
+      },
+      departures: [
+        '08:00-08:20',
+        '09:00-09:20',
+        '10:00-10:20',
+        '11:00-11:20',
+        '12:00-12:20',
+        '13:00-13:20',
+        '14:00-14:20',
+        '15:00-15:20',
+        '16:00-16:20',
+        '17:00-17:20',
+        '18:00-18:20',
+      ],
+    },
     about: {
       title: 'Sobre',
       titleHighlight: 'Nosotros',
@@ -811,6 +1042,8 @@ export const translations: Record<LanguageCode, Translation> = {
     footer: {
       followUs: 'Síguenos',
       popularTours: 'Nuestros Tours',
+      hopOnHopOffTour: 'Bus Hop-On Hop-Off',
+      cityTour: 'City Tour',
       audioGuideTour: 'Tour con Audioguía',
       wineTour: 'Tour de Vinos Pelješac',
       customTour: 'Tour Personalizado',
@@ -1091,6 +1324,99 @@ export const translations: Record<LanguageCode, Translation> = {
           'Merci ! Nous vous répondrons dans les 24 heures avec une proposition de visite personnalisée.',
       },
     },
+    cityTour: {
+      title: 'City Tour en Minibus Cabrio',
+      badge: 'NOUVEAU',
+      price: '40€',
+      duration: '90-120 min',
+      shortDescription:
+        'Profitez d\'une visite panoramique de Dubrovnik et de ses meilleurs points photo lors d\'un circuit guidé en minibus cabrio.',
+      fullDescription:
+        'Pour admirer toute la beauté de Dubrovnik, il faut non seulement découvrir la vieille ville, mais aussi profiter des panoramas situés au-dessus d\'elle. Ce circuit vous permet de capturer des vues incroyables et d\'en apprendre davantage grâce à votre chauffeur-guide local. Certaines étapes comprennent même des lieux de tournage de Game of Thrones.',
+      highlights: [
+        'Vues panoramiques depuis les hauteurs de la ville',
+        'Meilleurs spots photo de Dubrovnik',
+        'Visite de la source de la rivière Ombla',
+        'Point de vue du Mont Srđ avec temps libre',
+        'Lieux de tournage de Game of Thrones',
+        'Tour au coucher du soleil disponible',
+      ],
+      included: [
+        'Circuit panoramique 90-120 minutes',
+        'Chauffeur/guide anglophone',
+        'Temps libre dans la vieille ville',
+        'Transfert retour au bateau (si convenu)',
+      ],
+      notIncluded: [
+        'Billets d\'entrée aux remparts et musées',
+      ],
+      serviceType: 'Tour régulier / en groupe',
+      vehicle: 'Minibus cabrio touristique moderne avec WiFi gratuit, capacité jusqu\'à 8 passagers',
+      departures: [
+        '08:00-08:20',
+        '09:00-09:20',
+        '10:00-10:20',
+        '11:00-11:20',
+        '12:00-12:20',
+        '13:00-13:20',
+        '14:00-14:20',
+        '15:00-15:20',
+        'Tour au coucher du soleil',
+      ],
+    },
+    hopOnHopOffTour: {
+      title: 'Bus Hop-On Hop-Off',
+      badge: 'FLEXIBLE',
+      price: '20€',
+      duration: '60-90 min',
+      shortDescription:
+        'Visite flexible de Dubrovnik en bus. Montez et descendez aux arrêts marqués toute la journée avec un seul billet.',
+      fullDescription:
+        'Le tour hop-on hop-off est conçu pour les visiteurs qui souhaitent liberté de mouvement et leur propre rythme pour explorer Dubrovnik. Avec un billet, vous pouvez monter et descendre du bus aux arrêts marqués toute la journée, combinant balades panoramiques, promenades en bord de mer, baignade et photographie.',
+      highlights: [
+        'Accès illimité hop-on hop-off toute la journée',
+        'Vues panoramiques de Dubrovnik',
+        'Visitez la plage et la promenade de Lapad',
+        'Explorez la péninsule de Babin Kuk',
+        'Arrêt photo au pont Franjo Tuđman',
+        'Meilleur point de vue sur la vieille ville et les îles Élaphites',
+      ],
+      included: [
+        'Billet hop-on hop-off (valable toute la journée)',
+        'Tour panoramique en bus de Dubrovnik',
+        'Bus touristique climatisé',
+        'Arrêts marqués et départs réguliers',
+      ],
+      notIncluded: [
+        'Billets d\'entrée musées et remparts',
+        'Nourriture et boissons',
+        'Autres services non listés',
+      ],
+      serviceType: 'Tour hop-on hop-off privé / régulier',
+      howItWorks: 'L\'entrée et la sortie ne sont possibles qu\'aux arrêts marqués. À chaque arrêt vous pouvez : descendre et explorer la zone, continuer à marcher, nager ou photographier, monter dans le prochain bus avec un billet valide.',
+      stops: {
+        pile: 'PILE – Vieille ville de Dubrovnik (Point de départ)',
+        postaLapad: 'Pošta Lapad – Promenade en bord de mer, cafés, promenade côtière',
+        hotelPresident: 'Hotel President – Péninsule Babin Kuk, plage, baignade',
+        hotelKompas: 'Hotel Kompas – Plage de Lapad, promenade, restaurants',
+        gruz: 'Gruž – Gare routière principale, port de croisière, promenade du port',
+        bridge: 'Pont Franjo Tuđman – Vue sur la rivière Ombla, photos panoramiques',
+        viewpoint: 'Point de vue panoramique – Meilleure vue sur la vieille ville, la mer Adriatique et les îles Élaphites',
+      },
+      departures: [
+        '08:00-08:20',
+        '09:00-09:20',
+        '10:00-10:20',
+        '11:00-11:20',
+        '12:00-12:20',
+        '13:00-13:20',
+        '14:00-14:20',
+        '15:00-15:20',
+        '16:00-16:20',
+        '17:00-17:20',
+        '18:00-18:20',
+      ],
+    },
     about: {
       title: 'Notre',
       titleHighlight: 'Histoire',
@@ -1138,6 +1464,8 @@ export const translations: Record<LanguageCode, Translation> = {
     footer: {
       followUs: 'Suivez-nous',
       popularTours: 'Nos Visites',
+      hopOnHopOffTour: 'Bus Hop-On Hop-Off',
+      cityTour: 'City Tour',
       audioGuideTour: 'Visite Audio',
       wineTour: 'Tour Vinicole Pelješac',
       customTour: 'Visite Sur Mesure',
@@ -1421,6 +1749,99 @@ export const translations: Record<LanguageCode, Translation> = {
           'Vielen Dank! Wir melden uns innerhalb von 24 Stunden mit einem personalisierten Tourangebot.',
       },
     },
+    cityTour: {
+      title: 'Stadtrundfahrt mit Cabrio-Minivan',
+      badge: 'NEU',
+      price: '40€',
+      duration: '90-120 min',
+      shortDescription:
+        'Panoramafahrt durch Dubrovnik mit den schönsten Fotospots – geführt von einem lokalen Fahrer im Cabrio-Minivan.',
+      fullDescription:
+        'Neben dem Besuch der Altstadt sollten Besucher Dubrovnik unbedingt auch von oben erleben. Diese Tour führt Sie zu den beeindruckendsten Aussichtspunkten, ideal für unvergessliche Fotos. Ihr Fahrer-Guide erzählt Ihnen interessante Fakten über die Stadt, und Sie sehen einige Drehorte aus Game of Thrones.',
+      highlights: [
+        'Panoramablick von oberhalb der Stadt',
+        'Beste Fotospots in Dubrovnik',
+        'Besuch der Ombla-Flussquelle',
+        'Aussichtspunkt Berg Srđ mit Freizeit',
+        'Game of Thrones Drehorte',
+        'Sonnenuntergangstour verfügbar',
+      ],
+      included: [
+        'Panoramafahrt 90-120 Minuten',
+        'Englischsprachiger Fahrer/Guide',
+        'Freizeit in der Altstadt',
+        'Rücktransfer zum Schiff (falls vereinbart)',
+      ],
+      notIncluded: [
+        'Eintritt für Stadtmauern und Museen',
+      ],
+      serviceType: 'Reguläre / Gruppentour',
+      vehicle: 'Moderner touristischer Cabrio-Van mit kostenlosem WLAN, Kapazität bis 8 Personen',
+      departures: [
+        '08:00-08:20',
+        '09:00-09:20',
+        '10:00-10:20',
+        '11:00-11:20',
+        '12:00-12:20',
+        '13:00-13:20',
+        '14:00-14:20',
+        '15:00-15:20',
+        'Sonnenuntergangstour',
+      ],
+    },
+    hopOnHopOffTour: {
+      title: 'Hop-On Hop-Off Stadtrundfahrt',
+      badge: 'FLEXIBEL',
+      price: '20€',
+      duration: '60-90 min',
+      shortDescription:
+        'Flexible Besichtigung von Dubrovnik mit dem Bus. Steigen Sie den ganzen Tag mit einem Ticket an den markierten Haltestellen ein und aus.',
+      fullDescription:
+        'Die Hop-on Hop-off Bustour ist für Gäste konzipiert, die Bewegungsfreiheit und ihr eigenes Tempo beim Erkunden von Dubrovnik wünschen. Mit einem Ticket können Sie den ganzen Tag an den markierten Haltestellen ein- und aussteigen und Panoramafahrten, Spaziergänge am Meer, Schwimmen und Fotografieren kombinieren.',
+      highlights: [
+        'Unbegrenzter Hop-on Hop-off Zugang den ganzen Tag',
+        'Panoramablicke auf Dubrovnik',
+        'Besuchen Sie den Strand und die Promenade von Lapad',
+        'Erkunden Sie die Halbinsel Babin Kuk',
+        'Fotostopp an der Franjo-Tuđman-Brücke',
+        'Bester Aussichtspunkt auf Altstadt und Elaphiten-Inseln',
+      ],
+      included: [
+        'Hop-on Hop-off Ticket (ganztägig gültig)',
+        'Panorama-Bustour durch Dubrovnik',
+        'Klimatisierter Touristenbus',
+        'Markierte Haltestellen und regelmäßige Abfahrten',
+      ],
+      notIncluded: [
+        'Eintrittskarten für Museen und Stadtmauern',
+        'Speisen und Getränke',
+        'Andere nicht aufgeführte Dienstleistungen',
+      ],
+      serviceType: 'Private / Reguläre Hop-on Hop-off Bustour',
+      howItWorks: 'Ein- und Ausstieg ist nur an den markierten Haltestellen möglich. An jeder Haltestelle können Sie: aussteigen und die Gegend erkunden, weitergehen, schwimmen oder fotografieren, mit gültigem Ticket in den nächsten Bus steigen.',
+      stops: {
+        pile: 'PILE – Altstadt Dubrovnik (Ausgangspunkt)',
+        postaLapad: 'Pošta Lapad – Strandpromenade, Cafés, Küstenpromenade',
+        hotelPresident: 'Hotel President – Halbinsel Babin Kuk, Strand, Schwimmen',
+        hotelKompas: 'Hotel Kompas – Lapad Strand, Promenade, Restaurants',
+        gruz: 'Gruž – Hauptbusbahnhof, Kreuzfahrthafen, Hafenspaziergang',
+        bridge: 'Franjo-Tuđman-Brücke – Blick auf den Ombla-Fluss, Panoramafotos',
+        viewpoint: 'Panorama-Aussichtspunkt – Beste Aussicht auf Altstadt, Adria und Elaphiten-Inseln',
+      },
+      departures: [
+        '08:00-08:20',
+        '09:00-09:20',
+        '10:00-10:20',
+        '11:00-11:20',
+        '12:00-12:20',
+        '13:00-13:20',
+        '14:00-14:20',
+        '15:00-15:20',
+        '16:00-16:20',
+        '17:00-17:20',
+        '18:00-18:20',
+      ],
+    },
     about: {
       title: 'Über',
       titleHighlight: 'Unsere Geschichte',
@@ -1468,6 +1889,8 @@ export const translations: Record<LanguageCode, Translation> = {
     footer: {
       followUs: 'Folgen Sie uns',
       popularTours: 'Unsere Touren',
+      hopOnHopOffTour: 'Hop-On Hop-Off Bus',
+      cityTour: 'Stadtrundfahrt',
       audioGuideTour: 'Audio Guide Tour',
       wineTour: 'Pelješac Weintour',
       customTour: 'Maßgeschneiderte Tour',
@@ -1749,6 +2172,99 @@ export const translations: Record<LanguageCode, Translation> = {
           'Grazie! Ti risponderemo entro 24 ore con una proposta di tour personalizzata.',
       },
     },
+    cityTour: {
+      title: 'City Tour in Minivan Cabrio',
+      badge: 'NUOVO',
+      price: '40€',
+      duration: '90-120 min',
+      shortDescription:
+        'Un tour panoramico di Dubrovnik con i migliori punti fotografici, accompagnato da una guida locale a bordo di un moderno minivan cabrio.',
+      fullDescription:
+        'Per apprezzare davvero la bellezza di Dubrovnik, non basta visitare solo la città vecchia: i panorami più spettacolari si trovano sulle colline che la circondano. Durante questo tour scatterete foto indimenticabili e ascolterete curiosità raccontate dal vostro autista-guida. Vedrete anche alcune location delle riprese di Il Trono di Spade.',
+      highlights: [
+        'Viste panoramiche dall\'alto della città',
+        'Migliori punti fotografici di Dubrovnik',
+        'Visita alla sorgente del fiume Ombla',
+        'Punto panoramico Monte Srđ con tempo libero',
+        'Location de Il Trono di Spade',
+        'Tour al tramonto disponibile',
+      ],
+      included: [
+        'Percorso panoramico 90-120 minuti',
+        'Autista/guida di lingua inglese',
+        'Tempo libero nella città vecchia',
+        'Transfer di ritorno alla nave (se concordato)',
+      ],
+      notIncluded: [
+        'Biglietti d\'ingresso per mura e musei',
+      ],
+      serviceType: 'Tour regolare / di gruppo',
+      vehicle: 'Moderno minivan cabrio turistico con WiFi gratuito, capacità fino a 8 passeggeri',
+      departures: [
+        '08:00-08:20',
+        '09:00-09:20',
+        '10:00-10:20',
+        '11:00-11:20',
+        '12:00-12:20',
+        '13:00-13:20',
+        '14:00-14:20',
+        '15:00-15:20',
+        'Tour al tramonto',
+      ],
+    },
+    hopOnHopOffTour: {
+      title: 'Tour in Bus Hop-On Hop-Off',
+      badge: 'FLESSIBILE',
+      price: '20€',
+      duration: '60-90 min',
+      shortDescription:
+        'Visita flessibile di Dubrovnik in autobus. Sali e scendi alle fermate indicate per tutto il giorno con un unico biglietto.',
+      fullDescription:
+        'Il tour hop-on hop-off è pensato per gli ospiti che desiderano libertà di movimento e il proprio ritmo per esplorare Dubrovnik. Con un biglietto potete salire e scendere dall\'autobus alle fermate indicate per tutto il giorno, combinando gite panoramiche, passeggiate sul mare, nuoto e fotografia.',
+      highlights: [
+        'Accesso illimitato hop-on hop-off tutto il giorno',
+        'Viste panoramiche di Dubrovnik',
+        'Visita la spiaggia e la passeggiata di Lapad',
+        'Esplora la penisola di Babin Kuk',
+        'Sosta fotografica al ponte Franjo Tuđman',
+        'Miglior punto panoramico sulla città vecchia e isole Elafiti',
+      ],
+      included: [
+        'Biglietto hop-on hop-off (valido tutto il giorno)',
+        'Tour panoramico in autobus di Dubrovnik',
+        'Autobus turistico climatizzato',
+        'Fermate indicate e partenze regolari',
+      ],
+      notIncluded: [
+        'Biglietti d\'ingresso per musei e mura',
+        'Cibo e bevande',
+        'Altri servizi non elencati',
+      ],
+      serviceType: 'Tour hop-on hop-off privato / regolare',
+      howItWorks: 'L\'ingresso e l\'uscita sono possibili solo alle fermate indicate. Ad ogni fermata potete: scendere ed esplorare la zona, continuare a camminare, nuotare o fotografare, salire sul prossimo autobus con biglietto valido.',
+      stops: {
+        pile: 'PILE – Città Vecchia di Dubrovnik (Punto di partenza)',
+        postaLapad: 'Pošta Lapad – Passeggiata sul mare, caffè, lungomare',
+        hotelPresident: 'Hotel President – Penisola Babin Kuk, spiaggia, nuoto',
+        hotelKompas: 'Hotel Kompas – Spiaggia di Lapad, passeggiata, ristoranti',
+        gruz: 'Gruž – Stazione autobus principale, porto crociere, passeggiata al porto',
+        bridge: 'Ponte Franjo Tuđman – Vista sul fiume Ombla, foto panoramiche',
+        viewpoint: 'Punto panoramico – Miglior vista sulla città vecchia, Mare Adriatico e Isole Elafiti',
+      },
+      departures: [
+        '08:00-08:20',
+        '09:00-09:20',
+        '10:00-10:20',
+        '11:00-11:20',
+        '12:00-12:20',
+        '13:00-13:20',
+        '14:00-14:20',
+        '15:00-15:20',
+        '16:00-16:20',
+        '17:00-17:20',
+        '18:00-18:20',
+      ],
+    },
     about: {
       title: 'La Nostra',
       titleHighlight: 'Storia',
@@ -1796,6 +2312,8 @@ export const translations: Record<LanguageCode, Translation> = {
     footer: {
       followUs: 'Seguici',
       popularTours: 'I Nostri Tour',
+      hopOnHopOffTour: 'Bus Hop-On Hop-Off',
+      cityTour: 'City Tour',
       audioGuideTour: 'Tour con Audioguida',
       wineTour: 'Tour del Vino Pelješac',
       customTour: 'Tour Su Misura',

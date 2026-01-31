@@ -5,6 +5,10 @@ import { useState, useRef, useEffect } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { useLanguage } from './lib/LanguageContext';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 // Video Modal Component
 function VideoModal({
@@ -494,219 +498,395 @@ function FeaturedTours() {
             </p>
           </div>
 
-          {/* Three Tour Cards Grid */}
-          <div className='grid lg:grid-cols-3 gap-8'>
-            {/* Audio Guide Tour Card */}
-            <div className='bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col'>
-              <div className='relative h-56'>
-                <Image
-                  src='https://images.unsplash.com/photo-1555990793-da11153b2473?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'
-                  alt={t.audioGuideTour.title}
-                  fill
-                  sizes='(max-width: 1024px) 100vw, 33vw'
-                  className='object-cover'
-                />
-                <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent'></div>
-                <div className='absolute top-4 left-4'>
-                  <span className='bg-amber-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg'>
-                    {t.audioGuideTour.badge}
-                  </span>
-                </div>
-                <div className='absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-1'>
-                  <div className='flex items-center space-x-1'>
-                    <svg
-                      className='w-3.5 h-3.5 text-yellow-400 fill-current'
-                      viewBox='0 0 20 20'
+          {/* Tours Swiper Slider */}
+          <div className='relative tours-swiper-container'>
+            <Swiper
+              modules={[Navigation, Autoplay]}
+              spaceBetween={24}
+              slidesPerView={1}
+              loop={true}
+              autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
+              }}
+              navigation={{
+                prevEl: '.tours-swiper-prev',
+                nextEl: '.tours-swiper-next',
+              }}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2,
+                },
+                1024: {
+                  slidesPerView: 3,
+                },
+              }}
+              className='!pb-4'
+            >
+              {/* Hop-On Hop-Off Tour Card */}
+              <SwiperSlide className='!h-auto'>
+                <div className='bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full'>
+                  <div className='relative h-56'>
+                    <Image
+                      src='/img/dubrovnik/dubrovnik5.jpg'
+                      alt={t.hopOnHopOffTour.title}
+                      fill
+                      sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'
+                      className='object-cover'
+                    />
+                    <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent'></div>
+                    <div className='absolute top-4 left-4'>
+                      <span className='bg-blue-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg'>
+                        {t.hopOnHopOffTour.badge}
+                      </span>
+                    </div>
+                    <div className='absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-1'>
+                      <div className='flex items-center space-x-1'>
+                        <svg
+                          className='w-3.5 h-3.5 text-yellow-400 fill-current'
+                          viewBox='0 0 20 20'
+                        >
+                          <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                        </svg>
+                        <span className='text-xs font-bold text-gray-900'>4.9</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className='p-5 flex flex-col flex-grow'>
+                    <h3 className='text-lg font-bold text-gray-900 mb-2 line-clamp-2'>
+                      {t.hopOnHopOffTour.title}
+                    </h3>
+
+                    <div className='flex items-center gap-3 mb-3 p-2.5 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg'>
+                      <div className='text-center'>
+                        <div className='text-xl font-bold text-red-600'>
+                          {t.hopOnHopOffTour.price}
+                        </div>
+                        <div className='text-xs text-gray-500'>
+                          {t.tours.perPerson}
+                        </div>
+                      </div>
+                      <div className='w-px h-8 bg-gray-300'></div>
+                      <div className='text-center'>
+                        <div className='text-sm font-semibold text-gray-900'>
+                          {t.hopOnHopOffTour.duration}
+                        </div>
+                        <div className='text-xs text-gray-500'>
+                          {t.tours.duration}
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className='font-body text-gray-600 text-sm mb-4 flex-grow line-clamp-2'>
+                      {t.hopOnHopOffTour.shortDescription}
+                    </p>
+
+                    <Link
+                      href='/tours/hop-on-hop-off'
+                      className='block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 text-sm'
                     >
-                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                    </svg>
-                    <span className='text-xs font-bold text-gray-900'>4.9</span>
+                      {t.tours.bookTour}
+                    </Link>
                   </div>
                 </div>
-              </div>
+              </SwiperSlide>
 
-              <div className='p-5 flex flex-col flex-grow'>
-                <h3 className='text-lg font-bold text-gray-900 mb-2 line-clamp-2'>
-                  {t.audioGuideTour.title}
-                </h3>
-
-                {/* Price and Duration */}
-                <div className='flex items-center gap-3 mb-3 p-2.5 bg-gradient-to-r from-red-50 to-amber-50 rounded-lg'>
-                  <div className='text-center'>
-                    <div className='text-xl font-bold text-red-600'>
-                      {t.audioGuideTour.price}
+              {/* City Tour Card */}
+              <SwiperSlide className='!h-auto'>
+                <div className='bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full'>
+                  <div className='relative h-56'>
+                    <Image
+                      src='/img/bus.jpg'
+                      alt={t.cityTour.title}
+                      fill
+                      sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'
+                      className='object-cover'
+                    />
+                    <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent'></div>
+                    <div className='absolute top-4 left-4'>
+                      <span className='bg-green-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg'>
+                        {t.cityTour.badge}
+                      </span>
                     </div>
-                    <div className='text-xs text-gray-500'>
-                      {t.tours.perPerson}
+                    <div className='absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-1'>
+                      <div className='flex items-center space-x-1'>
+                        <svg
+                          className='w-3.5 h-3.5 text-yellow-400 fill-current'
+                          viewBox='0 0 20 20'
+                        >
+                          <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                        </svg>
+                        <span className='text-xs font-bold text-gray-900'>5.0</span>
+                      </div>
                     </div>
                   </div>
-                  <div className='w-px h-8 bg-gray-300'></div>
-                  <div className='text-center'>
-                    <div className='text-sm font-semibold text-gray-900'>
-                      {t.audioGuideTour.duration}
+
+                  <div className='p-5 flex flex-col flex-grow'>
+                    <h3 className='text-lg font-bold text-gray-900 mb-2 line-clamp-2'>
+                      {t.cityTour.title}
+                    </h3>
+
+                    <div className='flex items-center gap-3 mb-3 p-2.5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg'>
+                      <div className='text-center'>
+                        <div className='text-xl font-bold text-red-600'>
+                          {t.cityTour.price}
+                        </div>
+                        <div className='text-xs text-gray-500'>
+                          {t.tours.perPerson}
+                        </div>
+                      </div>
+                      <div className='w-px h-8 bg-gray-300'></div>
+                      <div className='text-center'>
+                        <div className='text-sm font-semibold text-gray-900'>
+                          {t.cityTour.duration}
+                        </div>
+                        <div className='text-xs text-gray-500'>
+                          {t.tours.duration}
+                        </div>
+                      </div>
                     </div>
-                    <div className='text-xs text-gray-500'>
-                      {t.tours.duration}
-                    </div>
-                  </div>
-                </div>
 
-                <p className='font-body text-gray-600 text-sm mb-4 flex-grow line-clamp-2'>
-                  {t.audioGuideTour.shortDescription}
-                </p>
+                    <p className='font-body text-gray-600 text-sm mb-4 flex-grow line-clamp-2'>
+                      {t.cityTour.shortDescription}
+                    </p>
 
-                <Link
-                  href='/tours/audio-guide'
-                  className='block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 text-sm'
-                >
-                  {t.tours.bookTour}
-                </Link>
-              </div>
-            </div>
-
-            {/* Wine Tour Card */}
-            <div className='bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col'>
-              <div className='relative h-56'>
-                <Image
-                  src='/img/peljesac/peljesac1.jpg'
-                  alt={t.wineTour.title}
-                  fill
-                  sizes='(max-width: 1024px) 100vw, 33vw'
-                  className='object-cover'
-                />
-                <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent'></div>
-                <div className='absolute top-4 left-4'>
-                  <span className='bg-red-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg'>
-                    {t.wineTour.badge}
-                  </span>
-                </div>
-                <div className='absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-1'>
-                  <div className='flex items-center space-x-1'>
-                    <svg
-                      className='w-3.5 h-3.5 text-yellow-400 fill-current'
-                      viewBox='0 0 20 20'
+                    <Link
+                      href='/tours/city-tour'
+                      className='block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 text-sm'
                     >
-                      <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
-                    </svg>
-                    <span className='text-xs font-bold text-gray-900'>4.8</span>
+                      {t.tours.bookTour}
+                    </Link>
                   </div>
                 </div>
-              </div>
+              </SwiperSlide>
 
-              <div className='p-5 flex flex-col flex-grow'>
-                <h3 className='text-lg font-bold text-gray-900 mb-2 line-clamp-2'>
-                  {t.wineTour.title}
-                </h3>
-
-                {/* Price and Duration */}
-                <div className='flex items-center gap-3 mb-3 p-2.5 bg-gradient-to-r from-purple-50 to-red-50 rounded-lg'>
-                  <div className='text-center'>
-                    <div className='text-xl font-bold text-red-600'>
-                      {t.wineTour.price}
+              {/* Audio Guide Tour Card */}
+              <SwiperSlide className='!h-auto'>
+                <div className='bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full'>
+                  <div className='relative h-56'>
+                    <Image
+                      src='https://images.unsplash.com/photo-1555990793-da11153b2473?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'
+                      alt={t.audioGuideTour.title}
+                      fill
+                      sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'
+                      className='object-cover'
+                    />
+                    <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent'></div>
+                    <div className='absolute top-4 left-4'>
+                      <span className='bg-amber-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg'>
+                        {t.audioGuideTour.badge}
+                      </span>
                     </div>
-                    <div className='text-xs text-gray-500'>
-                      {t.tours.perPerson}
+                    <div className='absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-1'>
+                      <div className='flex items-center space-x-1'>
+                        <svg
+                          className='w-3.5 h-3.5 text-yellow-400 fill-current'
+                          viewBox='0 0 20 20'
+                        >
+                          <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                        </svg>
+                        <span className='text-xs font-bold text-gray-900'>4.9</span>
+                      </div>
                     </div>
                   </div>
-                  <div className='w-px h-8 bg-gray-300'></div>
-                  <div className='text-center'>
-                    <div className='text-sm font-semibold text-gray-900'>
-                      {t.wineTour.duration}
+
+                  <div className='p-5 flex flex-col flex-grow'>
+                    <h3 className='text-lg font-bold text-gray-900 mb-2 line-clamp-2'>
+                      {t.audioGuideTour.title}
+                    </h3>
+
+                    <div className='flex items-center gap-3 mb-3 p-2.5 bg-gradient-to-r from-red-50 to-amber-50 rounded-lg'>
+                      <div className='text-center'>
+                        <div className='text-xl font-bold text-red-600'>
+                          {t.audioGuideTour.price}
+                        </div>
+                        <div className='text-xs text-gray-500'>
+                          {t.tours.perPerson}
+                        </div>
+                      </div>
+                      <div className='w-px h-8 bg-gray-300'></div>
+                      <div className='text-center'>
+                        <div className='text-sm font-semibold text-gray-900'>
+                          {t.audioGuideTour.duration}
+                        </div>
+                        <div className='text-xs text-gray-500'>
+                          {t.tours.duration}
+                        </div>
+                      </div>
                     </div>
-                    <div className='text-xs text-gray-500'>
-                      {t.tours.duration}
-                    </div>
-                  </div>
-                </div>
 
-                <p className='font-body text-gray-600 text-sm mb-4 flex-grow line-clamp-2'>
-                  {t.wineTour.shortDescription}
-                </p>
+                    <p className='font-body text-gray-600 text-sm mb-4 flex-grow line-clamp-2'>
+                      {t.audioGuideTour.shortDescription}
+                    </p>
 
-                <Link
-                  href='/tours/wine-tour'
-                  className='block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 text-sm'
-                >
-                  {t.tours.bookTour}
-                </Link>
-              </div>
-            </div>
-
-            {/* Custom Tour Card */}
-            <div className='bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col'>
-              <div className='relative h-56'>
-                {customTourImages.map((img, index) => (
-                  <Image
-                    key={img}
-                    src={img}
-                    alt={t.customTour.title}
-                    fill
-                    sizes='(max-width: 1024px) 100vw, 33vw'
-                    className={`object-cover transition-opacity duration-1000 ${
-                      index === customTourImageIndex
-                        ? 'opacity-100'
-                        : 'opacity-0'
-                    }`}
-                  />
-                ))}
-                <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent'></div>
-                <div className='absolute top-4 left-4'>
-                  <span className='bg-purple-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg'>
-                    {t.customTour.badge}
-                  </span>
-                </div>
-                {/* Custom Icon */}
-                <div className='absolute bottom-4 left-4 right-4'>
-                  <div className='flex flex-wrap gap-2'>
-                    <span className='bg-white/90 backdrop-blur-sm text-gray-900 px-2.5 py-1 rounded-full text-xs font-medium'>
-                      ✨ {t.customTour.createYourOwn}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className='p-5 flex flex-col flex-grow'>
-                <h3 className='text-lg font-bold text-gray-900 mb-2'>
-                  {t.customTour.title}
-                </h3>
-
-                {/* Custom Design Banner */}
-                <div className='flex items-center gap-3 mb-3 p-2.5 bg-purple-50 rounded-lg'>
-                  <div className='w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center'>
-                    <svg
-                      className='w-5 h-5 text-white'
-                      fill='none'
-                      stroke='currentColor'
-                      viewBox='0 0 24 24'
+                    <Link
+                      href='/tours/audio-guide'
+                      className='block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 text-sm'
                     >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth={2}
-                        d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
+                      {t.tours.bookTour}
+                    </Link>
+                  </div>
+                </div>
+              </SwiperSlide>
+
+              {/* Wine Tour Card */}
+              <SwiperSlide className='!h-auto'>
+                <div className='bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full'>
+                  <div className='relative h-56'>
+                    <Image
+                      src='/img/peljesac/peljesac1.jpg'
+                      alt={t.wineTour.title}
+                      fill
+                      sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'
+                      className='object-cover'
+                    />
+                    <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent'></div>
+                    <div className='absolute top-4 left-4'>
+                      <span className='bg-red-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg'>
+                        {t.wineTour.badge}
+                      </span>
+                    </div>
+                    <div className='absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-1'>
+                      <div className='flex items-center space-x-1'>
+                        <svg
+                          className='w-3.5 h-3.5 text-yellow-400 fill-current'
+                          viewBox='0 0 20 20'
+                        >
+                          <path d='M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z' />
+                        </svg>
+                        <span className='text-xs font-bold text-gray-900'>4.8</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className='p-5 flex flex-col flex-grow'>
+                    <h3 className='text-lg font-bold text-gray-900 mb-2 line-clamp-2'>
+                      {t.wineTour.title}
+                    </h3>
+
+                    <div className='flex items-center gap-3 mb-3 p-2.5 bg-gradient-to-r from-purple-50 to-red-50 rounded-lg'>
+                      <div className='text-center'>
+                        <div className='text-xl font-bold text-red-600'>
+                          {t.wineTour.price}
+                        </div>
+                        <div className='text-xs text-gray-500'>
+                          {t.tours.perPerson}
+                        </div>
+                      </div>
+                      <div className='w-px h-8 bg-gray-300'></div>
+                      <div className='text-center'>
+                        <div className='text-sm font-semibold text-gray-900'>
+                          {t.wineTour.duration}
+                        </div>
+                        <div className='text-xs text-gray-500'>
+                          {t.tours.duration}
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className='font-body text-gray-600 text-sm mb-4 flex-grow line-clamp-2'>
+                      {t.wineTour.shortDescription}
+                    </p>
+
+                    <Link
+                      href='/tours/wine-tour'
+                      className='block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 text-sm'
+                    >
+                      {t.tours.bookTour}
+                    </Link>
+                  </div>
+                </div>
+              </SwiperSlide>
+
+              {/* Custom Tour Card */}
+              <SwiperSlide className='!h-auto'>
+                <div className='bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full'>
+                  <div className='relative h-56'>
+                    {customTourImages.map((img, index) => (
+                      <Image
+                        key={img}
+                        src={img}
+                        alt={t.customTour.title}
+                        fill
+                        sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw'
+                        className={`object-cover transition-opacity duration-1000 ${
+                          index === customTourImageIndex
+                            ? 'opacity-100'
+                            : 'opacity-0'
+                        }`}
                       />
-                    </svg>
-                  </div>
-                  <div>
-                    <div className='text-sm font-semibold text-gray-900'>
-                      Your Vision
+                    ))}
+                    <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent'></div>
+                    <div className='absolute top-4 left-4'>
+                      <span className='bg-purple-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg'>
+                        {t.customTour.badge}
+                      </span>
                     </div>
-                    <div className='text-xs text-gray-500'>Our Expertise</div>
+                    <div className='absolute bottom-4 left-4 right-4'>
+                      <div className='flex flex-wrap gap-2'>
+                        <span className='bg-white/90 backdrop-blur-sm text-gray-900 px-2.5 py-1 rounded-full text-xs font-medium'>
+                          {t.customTour.createYourOwn}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className='p-5 flex flex-col flex-grow'>
+                    <h3 className='text-lg font-bold text-gray-900 mb-2'>
+                      {t.customTour.title}
+                    </h3>
+
+                    <div className='flex items-center gap-3 mb-3 p-2.5 bg-purple-50 rounded-lg'>
+                      <div className='w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center'>
+                        <svg
+                          className='w-5 h-5 text-white'
+                          fill='none'
+                          stroke='currentColor'
+                          viewBox='0 0 24 24'
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth={2}
+                            d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <div className='text-sm font-semibold text-gray-900'>
+                          Your Vision
+                        </div>
+                        <div className='text-xs text-gray-500'>Our Expertise</div>
+                      </div>
+                    </div>
+
+                    <p className='font-body text-gray-600 text-sm mb-4 flex-grow line-clamp-3'>
+                      {t.customTour.shortDescription}
+                    </p>
+
+                    <button
+                      onClick={() => setIsModalOpen(true)}
+                      className='w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 text-sm'
+                    >
+                      {t.customTour.createYourOwn}
+                    </button>
                   </div>
                 </div>
+              </SwiperSlide>
+            </Swiper>
 
-                <p className='font-body text-gray-600 text-sm mb-4 flex-grow line-clamp-3'>
-                  {t.customTour.shortDescription}
-                </p>
-
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  className='w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 text-sm'
-                >
-                  {t.customTour.createYourOwn}
-                </button>
-              </div>
-            </div>
+            {/* Navigation Buttons */}
+            <button className='tours-swiper-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors hidden lg:flex'>
+              <svg className='w-6 h-6 text-gray-700' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
+              </svg>
+            </button>
+            <button className='tours-swiper-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors hidden lg:flex'>
+              <svg className='w-6 h-6 text-gray-700' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+              </svg>
+            </button>
           </div>
         </div>
       </section>
