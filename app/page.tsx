@@ -6,7 +6,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import { useLanguage } from './lib/LanguageContext';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -501,14 +501,10 @@ function FeaturedTours() {
           {/* Tours Swiper Slider */}
           <div className='relative tours-swiper-container'>
             <Swiper
-              modules={[Navigation, Autoplay]}
+              modules={[Navigation]}
               spaceBetween={24}
               slidesPerView={1}
               loop={true}
-              autoplay={{
-                delay: 5000,
-                disableOnInteraction: false,
-              }}
               navigation={{
                 prevEl: '.tours-swiper-prev',
                 nextEl: '.tours-swiper-next',
