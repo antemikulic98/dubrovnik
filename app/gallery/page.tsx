@@ -6,11 +6,12 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useLanguage } from '../lib/LanguageContext';
 
-// Generate image arrays from local folders
-const dubrovnikImages = Array.from({ length: 32 }, (_, i) => ({
-  id: `dubrovnik-${i + 1}`,
-  src: `/img/dubrovnik/dubrovnik${i + 1}.jpg`,
-  alt: `Dubrovnik Old Town - Photo ${i + 1}`,
+// Explicit list of existing dubrovnik images
+const dubrovnikImageNumbers = [1, 2, 3, 4, 5, 6, 13, 14, 15, 16, 17, 18, 19, 20, 21, 25, 31, 32];
+const dubrovnikImages = dubrovnikImageNumbers.map((num) => ({
+  id: `dubrovnik-${num}`,
+  src: `/img/dubrovnik/dubrovnik${num}.jpg`,
+  alt: `Dubrovnik Old Town - Photo ${num}`,
   category: 'Dubrovnik',
 }));
 

@@ -34,7 +34,7 @@ const blogPostsData = {
   },
   'best-beaches-dubrovnik': {
     key: 'beaches' as const,
-    image: '/img/dubrovnik/dubrovnik22.jpg',
+    image: '/img/dubrovnik/dubrovnik5.jpg',
     category: 'travel' as const,
     date: '2024-10-20',
     relatedSlugs: ['hidden-gems-old-town', 'best-wineries-peljesac'],

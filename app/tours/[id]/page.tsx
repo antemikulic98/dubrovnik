@@ -12,8 +12,9 @@ interface TourPageProps {
   params: Promise<{ id: string }>;
 }
 
-// Dubrovnik images for Audio Guide Tour
-const dubrovnikImages = Array.from({ length: 32 }, (_, i) => `/img/dubrovnik/dubrovnik${i + 1}.jpg`);
+// Explicit list of existing dubrovnik images
+const dubrovnikImageNumbers = [1, 2, 3, 4, 5, 6, 13, 14, 15, 16, 17, 18, 19, 20, 21, 25, 31, 32];
+const dubrovnikImages = dubrovnikImageNumbers.map((num) => `/img/dubrovnik/dubrovnik${num}.jpg`);
 
 // Pelješac images for Wine Tour
 const peljesacImages = Array.from({ length: 171 }, (_, i) => `/img/peljesac/peljesac${i + 1}.jpg`);
